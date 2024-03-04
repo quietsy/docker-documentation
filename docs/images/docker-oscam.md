@@ -56,7 +56,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/data:/config
+      - /path/to/oscam/data:/config
     ports:
       - 8888:8888
     devices:
@@ -73,7 +73,7 @@ docker run -d \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
   -p 8888:8888 \
-  -v /path/to/data:/config \
+  -v /path/to/oscam/data:/config \
   --device /dev/ttyUSB0:/dev/ttyUSB0 \
   --restart unless-stopped \
   lscr.io/linuxserver/oscam:latest
@@ -299,6 +299,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **04.03.24:** - Rebase to Alpine 3.19. Add libdvbcsa.
 * **27.08.23:** - Rebase to Alpine 3.18. Pull PCSC driver from Linuxserver S3 due to Cloudflare blocking curl download of original file.
 * **07.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
 * **13.03.23:** - Rebase to Alpine 3.17.
