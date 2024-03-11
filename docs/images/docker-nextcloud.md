@@ -98,7 +98,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/appdata:/config
+      - /path/to/nextcloud/config:/config
       - /path/to/data:/data
     ports:
       - 443:443
@@ -114,7 +114,7 @@ docker run -d \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
   -p 443:443 \
-  -v /path/to/appdata:/config \
+  -v /path/to/nextcloud/config:/config \
   -v /path/to/data:/data \
   --restart unless-stopped \
   lscr.io/linuxserver/nextcloud:latest
@@ -142,7 +142,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Volume | Function |
 | :----: | --- |
-| `/config` | Nextcloud configs. |
+| `/config` | Persistent config files |
 | `/data` | Your personal data. |
 
 #### Miscellaneous Options
@@ -313,6 +313,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **06.03.24:** - Rebase to Alpine 3.19 with php 8.3.
 * **02.01.24:** - Existing users should update: site-confs/default.conf - Cleanup default site conf.
 * **22.12.23:** - Site default conf updating to include mime.types for js and mjs and update location to include more file types.
 * **28.10.23:** - Disable web upgrades using occ during init.
