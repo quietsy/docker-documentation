@@ -68,7 +68,6 @@ services:
       - /path/to/appdata/config:/config
     ports:
       - 8080:8080
-      - 33060:33060 #optional
     restart: unless-stopped
 ```
 
@@ -84,7 +83,6 @@ docker run -d \
   -e EXTERNALURL=yourdomain.url \
   -e SERVER_IP=0.0.0.0 `#optional` \
   -p 8080:8080 \
-  -p 33060:33060 `#optional` \
   -v /path/to/appdata/config:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/pydio-cells:latest
@@ -99,7 +97,6 @@ Containers are configured using parameters passed at runtime (such as those abov
 | Parameter | Function |
 | :----: | --- |
 | `8080` | Http port |
-| `33060` | gRPC port (required for CellsSync). |
 
 ### Environment Variables (`-e`)
 
@@ -286,6 +283,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **14.03.24:** - Rebasing to alpine 3.19. Grpc port defaults to 8080.
 * **11.10.23:** - Rebasing to alpine 3.18. Build on alpine edge with Go 1.21.
 * **06.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
 * **01.12.22:** - Rebasing to alpine 3.17. Adding multi-arch support. Updating cli arguments for v4 compatibility.
