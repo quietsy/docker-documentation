@@ -50,7 +50,7 @@ Non linuxserver.io containers are known to have the following configuration diff
 
 * The permissions environmental variables which are defined as `PGID` and `PUID` within this container may have been `APP_UID` and `APP_UID` in other versions.
 
-* The configuration file directory which is volume mounted as `config` within this container may be set as the environmetal variable `APP_DATA` in other versions.
+* The configuration file directory which is volume mounted as `config` within this container may be set as the environmental variable `APP_DATA` in other versions.
 
 * The cache directory which is set in `config.ini` may be configured as a fixed path `cache_dir = /data/cache`.
 Symptoms of this issue include port usage problems and a failure to start the web server log entries.
@@ -60,7 +60,7 @@ It is recommended that a clean install be completed, rather than a migration, ho
 
 * start a new instance of this image
 
-* compare and align SickGear version numbers bewteen old and new. Ideally they should match but at a minumum the old vesion should be a lower version number to allow SickGear itself to try and migrate
+* compare and align SickGear version numbers between old and new. Ideally they should match but at a minimum the old version should be a lower version number to allow SickGear itself to try and migrate
 
 * stop both containers
 
@@ -85,7 +85,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/data:/config
+      - /path/to/sickgear/data:/config
       - /path/to/data:/tv
       - /path/to/data:/downloads
     ports:
@@ -102,7 +102,7 @@ docker run -d \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
   -p 8081:8081 \
-  -v /path/to/data:/config \
+  -v /path/to/sickgear/data:/config \
   -v /path/to/data:/tv \
   -v /path/to/data:/downloads \
   --restart unless-stopped \
@@ -131,7 +131,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Volume | Function |
 | :----: | --- |
-| `/config` | this will store any uploaded data on the docker host |
+| `/config` | Persistent configuration files. |
 | `/tv` | where you store your tv shows |
 | `/downloads` | your downloads folder for post processing (must not be download in progress) |
 
@@ -303,6 +303,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **20.03.24:** - Rebase to Alpine 3.19.
 * **08.10.23:** - Install unrar from [linuxserver repo](https://github.com/linuxserver/docker-unrar).
 * **10.08.23:** - Bump unrar to 6.2.10.
 * **27.05.23:** - Rebase to Alpine 3.18, deprecate armhf.
