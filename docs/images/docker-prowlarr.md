@@ -67,7 +67,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/data:/config
+      - /path/to/prowlarr/data:/config
     ports:
       - 9696:9696
     restart: unless-stopped
@@ -82,7 +82,7 @@ docker run -d \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
   -p 9696:9696 \
-  -v /path/to/data:/config \
+  -v /path/to/prowlarr/data:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/prowlarr:latest
 ```
@@ -95,7 +95,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `9696` | The port for the Prowlarr webinterface |
+| `9696` | The port for the Prowlarr web UI |
 
 ### Environment Variables (`-e`)
 
@@ -279,6 +279,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **20.03.24:** - Rebase to Alpine 3.19.
 * **06.06.23:** - Rebase master to Alpine 3.18, deprecate armhf as per [https://www.linuxserver.io/armhf](https://www.linuxserver.io/armhf).
 * **03.01.23:** - Publish stable release.
 * **20.02.22:** - Rebase develop branch to Alpine.
