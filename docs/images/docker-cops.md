@@ -88,10 +88,11 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - <path to data>:/config
-      - <path to data>:/books
+      - /path/to/cops/config:/config
+      - /path/to/data:/books
     ports:
       - 80:80
+      - 443:443
     restart: unless-stopped
 ```
 
@@ -104,8 +105,9 @@ docker run -d \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
   -p 80:80 \
-  -v <path to data>:/config \
-  -v <path to data>:/books \
+  -p 443:443 \
+  -v /path/to/cops/config:/config \
+  -v /path/to/data:/books \
   --restart unless-stopped \
   lscr.io/linuxserver/cops:latest
 ```
@@ -118,7 +120,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `80` | WebUI |
+| `80` | HTTP WebUI |
+| `443` | HTTPS WebUI |
 
 ### Environment Variables (`-e`)
 
@@ -303,6 +306,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **20.03.24:** - Rebase to Alpine 3.19.
 * **25.12.23:** - Existing users should update: site-confs/default.conf - Cleanup default site conf.
 * **11.08.23:** - Undeprecate and add new branch with mikespub fork which is actively maintained.
 * **15.05.23:** - Deprecate due to upstream dev abandonment of project.
