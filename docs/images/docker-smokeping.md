@@ -42,6 +42,7 @@ The architectures supported by this image are:
 * To reload the configuration without restarting the container, run `docker exec smokeping pkill -f -HUP '/usr/bin/perl /usr/s?bin/smokeping(_cgi)?'`, where `smokeping` is the container ID.
 * To restart the container, run `docker restart smokeping`, where `smokeping` is the container ID.
 * Note that the default `Targets` file includes items that may or may not work. These are simply to provide examples of configuration.
+* Slave setup: modify the `Targets`, `Slaves`, and `smokeping_secrets` files on the master host, per [the documentation](https://manpages.ubuntu.com/manpages/trusty/en/man7/smokeping_master_slave.7.html).
 
 ## Usage
 
@@ -59,6 +60,9 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
+      - MASTER_URL=http://<master-host-ip>:80/smokeping/ #optional
+      - SHARED_SECRET=password #optional
+      - CACHE_DIR=/tmp #optional
     volumes:
       - /path/to/smokeping/config:/config
       - /path/to/smokeping/data:/data
@@ -75,6 +79,9 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
+  -e MASTER_URL=http://<master-host-ip>:80/smokeping/ `#optional` \
+  -e SHARED_SECRET=password `#optional` \
+  -e CACHE_DIR=/tmp `#optional` \
   -p 80:80 \
   -v /path/to/smokeping/config:/config \
   -v /path/to/smokeping/data:/data \
@@ -99,6 +106,9 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
+| `MASTER_URL=http://<master-host-ip>:80/smokeping/` | Specify the master url to connect to. Used when in slave mode. |
+| `SHARED_SECRET=password` | Specify the master shared secret for this host. Used when in slave mode. |
+| `CACHE_DIR=/tmp` | Specify the cache directory for this host. Used when in slave mode. |
 
 ### Volume Mappings (`-v`)
 
@@ -275,6 +285,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **22.03.24:** - Adding ability to run as a slave.
 * **23.12.23:** - Rebase to Alpine 3.19.
 * **29.11.23:** - Bump tcpping to 1.8.
 * **21.11.23:** - Add support for IRTT Probes.
