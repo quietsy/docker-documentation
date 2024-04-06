@@ -36,9 +36,9 @@ The architectures supported by this image are:
 
 ## Application Setup
 
-- Go to the [duckdns website](https://duckdns.org/), register your subdomain(s) and retrieve your token
-- Create a container with your subdomain(s) and token. If you own user.duckdns.org, you put `SUBDOMAINS=user` you would NOT put a sub subdomain like overseerr from overseerr.user.ducksdns.org
-- It will update your IP with the DuckDNS service every 5 minutes (with a random jitter)
+- Go to the [duckdns website](https://duckdns.org/), register your subdomain(s) and retrieve your token.
+- Create a container with your subdomain(s) and token. If you own `user.duckdns.org`, you set `SUBDOMAINS=user`. You would NOT set a sub subdomain like `overseerr` from `overseerr.user.ducksdns.org`.
+- It will update your IP with the DuckDNS service every 5 minutes (with a random jitter).
 
 ## Notice regarding automatic detection
 
@@ -122,7 +122,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Volume | Function |
 | :----: | --- |
-| `/config` | Persistent config files |
+| `/config` | Persistent config files. Also set `LOG_FILE=true` to keep address history. |
 
 #### Miscellaneous Options
 
@@ -294,6 +294,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **30.03.24:** - Added IP address to logging output when IP changes.
 * **23.12.23:** - Rebase to Alpine 3.19.
 * **14.10.23:** - Rework shell script for case insensitivity and update readme to be more clear.
 * **13.10.23:** - Add support for public IPv6 address update using Cloudflare.
