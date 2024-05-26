@@ -82,7 +82,7 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /path/to/appdata/config:/config
+      - /path/to/qbittorrent/appdata:/config
       - /path/to/downloads:/downloads
     ports:
       - 8080:8080
@@ -104,7 +104,7 @@ docker run -d \
   -p 8080:8080 \
   -p 6881:6881 \
   -p 6881:6881/udp \
-  -v /path/to/appdata/config:/config \
+  -v /path/to/qbittorrent/appdata:/config \
   -v /path/to/downloads:/downloads \
   --restart unless-stopped \
   lscr.io/linuxserver/qbittorrent:latest
@@ -307,6 +307,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **25.05.24:** - Remove qbittorrent-cli as it still requires openssl 1.1 which is EOL.
 * **14.02.24:** - Only set/override torrenting port if the optional env var is set.
 * **14.02.24:** - Add torrenting port support.
 * **31.01.24:** - Remove obsolete compat packages.
