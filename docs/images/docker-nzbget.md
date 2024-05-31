@@ -85,7 +85,7 @@ services:
       - NZBGET_PASS=tegbzn6789 #optional
     volumes:
       - /path/to/nzbget/data:/config
-      - /path/to/nzbget/downloads:/downloads #optional
+      - /path/to/downloads:/downloads #optional
     ports:
       - 6789:6789
     restart: unless-stopped
@@ -103,7 +103,7 @@ docker run -d \
   -e NZBGET_PASS=tegbzn6789 `#optional` \
   -p 6789:6789 \
   -v /path/to/nzbget/data:/config \
-  -v /path/to/nzbget/downloads:/downloads `#optional` \
+  -v /path/to/downloads:/downloads `#optional` \
   --restart unless-stopped \
   lscr.io/linuxserver/nzbget:latest
 ```
@@ -303,4 +303,5 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
-* **09.05.24:** - Revive image based on the fork from https://github.com/nzbgetcom/nzbget
+* **31.05.24:** - Rebase to Alpine 3.20.
+* **09.05.24:** - Revive image based on the fork from https://github.com/nzbgetcom/nzbget.
