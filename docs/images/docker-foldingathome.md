@@ -49,8 +49,8 @@ There are a couple of minor issues with the webgui:
 ### Nvidia
 
 Hardware acceleration users for Nvidia will need to install the container runtime provided by Nvidia on their host, instructions can be found here:
-https://github.com/NVIDIA/nvidia-docker
-We automatically add the necessary environment variable that will utilise all the features available on a GPU on the host. Once nvidia-docker is installed on your host you will need to re/create the docker container with the nvidia container runtime `--runtime=nvidia` and add an environment variable `-e NVIDIA_VISIBLE_DEVICES=all` (can also be set to a specific gpu's UUID, this can be discovered by running `nvidia-smi --query-gpu=gpu_name,gpu_uuid --format=csv` ). NVIDIA automatically mounts the GPU and drivers from your host into the foldingathome docker container.
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html  
+We automatically add the necessary environment variable that will utilise all the features available on a GPU on the host. Once nvidia container toolkit is installed on your host you will need to re/create the docker container with the nvidia container runtime `--runtime=nvidia` and add an environment variable `-e NVIDIA_VISIBLE_DEVICES=all` (can also be set to a specific gpu's UUID, this can be discovered by running `nvidia-smi --query-gpu=gpu_name,gpu_uuid --format=csv` ). NVIDIA automatically mounts the GPU and drivers from your host into the foldingathome docker container.
 
 ## Usage
 
@@ -68,6 +68,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
+      - CLI_ARGS= #optional
     volumes:
       - /path/to/data:/config
     ports:
@@ -84,6 +85,7 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
+  -e CLI_ARGS= `#optional` \
   -p 7396:7396 \
   -p 36330:36330 `#optional` \
   -v /path/to/data:/config \
@@ -109,6 +111,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
+| `CLI_ARGS=` | Optionally pass additional cli arguments to `FAHClient` on container start. |
 
 ### Volume Mappings (`-v`)
 
@@ -284,6 +287,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **15.06.24:** - Rebase to Ubuntu Noble, add optional cli args.
 * **14.12.22:** - Rebase to Ubuntu Jammy, migrate to s6v3.
 * **15.01.22:** - Rebase to Ubuntu Focal. Add arm64v8 builds (cpu only). Increase verbosity about gpu driver permission settings.
 * **09.01.21:** - Add nvidia.icd.
