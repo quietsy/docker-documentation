@@ -18,7 +18,7 @@ title: snipe-it
 
 [Snipe-it](https://github.com/snipe/snipe-it) makes asset management easy. It was built by people solving real-world IT and asset management problems, and a solid UX has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
 
-[![snipe-it](https://s3-us-west-2.amazonaws.com/linuxserver-docs/images/snipe-it-logo500x500.png)](https://github.com/snipe/snipe-it)
+[![snipe-it](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/snipe-it-logo.png)](https://github.com/snipe/snipe-it)
 
 ## Supported Architectures
 
@@ -36,13 +36,9 @@ The architectures supported by this image are:
 
 ## Application Setup
 
-"Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
+Access the webui at `<your-ip>:8080`, for more information check out [Snipe-it](https://github.com/snipe/snipe-it).
 
 **This container requires a MySQL or MariaDB server to connect to, we recommend [ours](https://github.com/linuxserver/docker-mariadb)**
-
-### PHP customization
-
-This image uses our NGINX base image all override configuration files for PHP are located in `/config/php`.
 
 ## Usage
 
@@ -60,24 +56,26 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
+      - APP_KEY=
       - APP_URL=http://localhost:8080
       - MYSQL_PORT_3306_TCP_ADDR=
       - MYSQL_PORT_3306_TCP_PORT=
       - MYSQL_DATABASE=
       - MYSQL_USER=
       - MYSQL_PASSWORD=
-      - APP_ENV=production #optional
       - APP_DEBUG=false #optional
+      - APP_ENV=production #optional
+      - APP_FORCE_TLS=false #optional
       - APP_LOCALE= #optional
-      - MAIL_PORT_587_TCP_ADDR=US/Pacific #optional
-      - MAIL_PORT_587_TCP_PORT=US/Pacific #optional
-      - MAIL_ENV_FROM_ADDR=US/Pacific #optional
-      - MAIL_ENV_FROM_NAME=US/Pacific #optional
-      - MAIL_ENV_ENCRYPTION=US/Pacific #optional
-      - MAIL_ENV_USERNAME=US/Pacific #optional
-      - MAIL_ENV_PASSWORD=US/Pacific #optional
+      - MAIL_PORT_587_TCP_ADDR= #optional
+      - MAIL_PORT_587_TCP_PORT= #optional
+      - MAIL_ENV_FROM_ADDR= #optional
+      - MAIL_ENV_FROM_NAME= #optional
+      - MAIL_ENV_ENCRYPTION= #optional
+      - MAIL_ENV_USERNAME= #optional
+      - MAIL_ENV_PASSWORD= #optional
     volumes:
-      - /path/to/data:/config
+      - /path/to/snipe-it/data:/config
     ports:
       - 8080:80
     restart: unless-stopped
@@ -91,24 +89,26 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
+  -e APP_KEY= \
   -e APP_URL=http://localhost:8080 \
   -e MYSQL_PORT_3306_TCP_ADDR= \
   -e MYSQL_PORT_3306_TCP_PORT= \
   -e MYSQL_DATABASE= \
   -e MYSQL_USER= \
   -e MYSQL_PASSWORD= \
-  -e APP_ENV=production `#optional` \
   -e APP_DEBUG=false `#optional` \
+  -e APP_ENV=production `#optional` \
+  -e APP_FORCE_TLS=false `#optional` \
   -e APP_LOCALE= `#optional` \
-  -e MAIL_PORT_587_TCP_ADDR=US/Pacific `#optional` \
-  -e MAIL_PORT_587_TCP_PORT=US/Pacific `#optional` \
-  -e MAIL_ENV_FROM_ADDR=US/Pacific `#optional` \
-  -e MAIL_ENV_FROM_NAME=US/Pacific `#optional` \
-  -e MAIL_ENV_ENCRYPTION=US/Pacific `#optional` \
-  -e MAIL_ENV_USERNAME=US/Pacific `#optional` \
-  -e MAIL_ENV_PASSWORD=US/Pacific `#optional` \
+  -e MAIL_PORT_587_TCP_ADDR= `#optional` \
+  -e MAIL_PORT_587_TCP_PORT= `#optional` \
+  -e MAIL_ENV_FROM_ADDR= `#optional` \
+  -e MAIL_ENV_FROM_NAME= `#optional` \
+  -e MAIL_ENV_ENCRYPTION= `#optional` \
+  -e MAIL_ENV_USERNAME= `#optional` \
+  -e MAIL_ENV_PASSWORD= `#optional` \
   -p 8080:80 \
-  -v /path/to/data:/config \
+  -v /path/to/snipe-it/data:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/snipe-it:latest
 ```
@@ -130,22 +130,24 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
+| `APP_KEY=` | App key used for encrypting stored data. Generate with `docker exec snipe-it php /app/www/artisan key:generate --show`. |
 | `APP_URL=http://localhost:8080` | Hostname or IP and port if applicable, be sure to define https/http |
 | `MYSQL_PORT_3306_TCP_ADDR=` | Mysql hostname or IP to use |
 | `MYSQL_PORT_3306_TCP_PORT=` | Mysql port to use |
 | `MYSQL_DATABASE=` | Mysql database to use |
 | `MYSQL_USER=` | Mysql user to use |
 | `MYSQL_PASSWORD=` | Mysql password to use |
-| `APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
 | `APP_DEBUG=false` | Set to `true` to see debugging output in the web UI. |
+| `APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
+| `APP_FORCE_TLS=false` | Set to `true` if running behind a reverse proxy |
 | `APP_LOCALE=` | Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language). |
-| `MAIL_PORT_587_TCP_ADDR=US/Pacific` | SMTP mail server ip or hostname. |
-| `MAIL_PORT_587_TCP_PORT=US/Pacific` | SMTP mail server port. |
-| `MAIL_ENV_FROM_ADDR=US/Pacific` | The email address mail should be replied to and listed when sent. |
-| `MAIL_ENV_FROM_NAME=US/Pacific` | The name listed on email sent from the default account on the system. |
-| `MAIL_ENV_ENCRYPTION=US/Pacific` | Mail encryption to use e.g. `tls`. |
-| `MAIL_ENV_USERNAME=US/Pacific` | SMTP server login username. |
-| `MAIL_ENV_PASSWORD=US/Pacific` | SMTP server login password. |
+| `MAIL_PORT_587_TCP_ADDR=` | SMTP mail server ip or hostname. |
+| `MAIL_PORT_587_TCP_PORT=` | SMTP mail server port. |
+| `MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent. |
+| `MAIL_ENV_FROM_NAME=` | The name listed on email sent from the default account on the system. |
+| `MAIL_ENV_ENCRYPTION=` | Mail encryption to use e.g. `tls`. |
+| `MAIL_ENV_USERNAME=` | SMTP server login username. |
+| `MAIL_ENV_PASSWORD=` | SMTP server login password. |
 
 ### Volume Mappings (`-v`)
 
@@ -321,6 +323,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **17.06.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
 * **06.03.24:** - Existing users should update: site-confs/default.conf - Cleanup default site conf.
 * **17.02.24:** - Add php81-exif.
 * **03.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
