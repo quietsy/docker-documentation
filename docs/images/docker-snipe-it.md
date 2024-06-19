@@ -140,7 +140,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `APP_DEBUG=false` | Set to `true` to see debugging output in the web UI. |
 | `APP_ENV=production` | Default is `production` but can use `testing` or `develop`. |
 | `APP_FORCE_TLS=false` | Set to `true` if running behind a reverse proxy |
-| `APP_LOCALE=` | Default is `en`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language). |
+| `APP_LOCALE=` | Default is `en-US`. Set to a language from [this list](https://snipe-it.readme.io/docs/configuration#section-setting-a-language). |
 | `MAIL_PORT_587_TCP_ADDR=` | SMTP mail server ip or hostname. |
 | `MAIL_PORT_587_TCP_PORT=` | SMTP mail server port. |
 | `MAIL_ENV_FROM_ADDR=` | The email address mail should be replied to and listed when sent. |
