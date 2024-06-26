@@ -36,13 +36,19 @@ The architectures supported by this image are:
 
 ## Application Setup
 
-This image sets up the Folding@home client. The interface is available at `http://your-ip:7396`.
+This image sets up the Folding@home client. The interface is available at [https://app.foldingathome.org](https://app.foldingathome.org).
 
-The built-in webserver provides very basic control (ie. GPUs are only active when set to `Medium` or higher). For more fine grained control of individual devices, you can use the FAHControl app on a different device and connect remotely via port `36330` (no password).
+Before setting up this container, please register for an account on [https://app.foldingathome.org](https://app.foldingathome.org) and retrieve the account token shown in the account settings. That value should be populated in the `ACCOUNT_TOKEN` env var.
 
-There are a couple of minor issues with the webgui:
-- If you get an "ERR_EMPTY_RESPONSE" error when trying to access via IP, it's most likely due to a clash of cookies/cache. Try opening in an incgnito window.
-- If you're getting a constant refresh of the window but no display of info, try a force refresh via `shft-F5` or `ctrl-F5`.
+Once the container is created with the token and the machine name, the instance should be listed in the web app and can be controlled there.
+
+Afterwards, the `ACCOUNT_TOKEN` and the `MACHINE_NAME` vars can be removed as the instance will already be associated with the online account and the info stored in the config folder.
+
+## Migration from version 7.6
+
+Version 8 of fah-client has been rewritten and has some breaking changes that we can't automatically mitigate in this container.
+
+Unlike v7, v8 no longer bundles a local webgui. The web app is loaded from an online source and can only auto-detect instances that are running on the same machine (bare metal) as the browser. This is not possible in a docker container. Therefore, upgrading to v8 requires registering for an online account, retrieving the account token and setting it in the new env var `ACCOUNT_TOKEN`, along with a friendly name in `MACHINE_NAME`.
 
 ## GPU Hardware Acceleration
 
@@ -68,12 +74,13 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
+      - ACCOUNT_TOKEN=
+      - MACHINE_NAME=
       - CLI_ARGS= #optional
     volumes:
-      - /path/to/data:/config
+      - /path/to/foldingathome/data:/config
     ports:
-      - 7396:7396
-      - 36330:36330 #optional
+      - 7396:7396 #optional
     restart: unless-stopped
 ```
 
@@ -85,10 +92,11 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
+  -e ACCOUNT_TOKEN= \
+  -e MACHINE_NAME= \
   -e CLI_ARGS= `#optional` \
-  -p 7396:7396 \
-  -p 36330:36330 `#optional` \
-  -v /path/to/data:/config \
+  -p 7396:7396 `#optional` \
+  -v /path/to/foldingathome/data:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/foldingathome:latest
 ```
@@ -101,8 +109,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `7396` | Folding@home web gui. |
-| `36330` | Optional port for connecting remotely via FAHControl app (no password). |
+| `7396` | Folding@home web gui (redirects to [https://app.foldingathome.org](https://app.foldingathome.org)). |
 
 ### Environment Variables (`-e`)
 
@@ -111,7 +118,9 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
-| `CLI_ARGS=` | Optionally pass additional cli arguments to `FAHClient` on container start. |
+| `ACCOUNT_TOKEN=` | Register for an account on `https://app.foldingathome.org` and retrieve account token in settings. Required on first start. |
+| `MACHINE_NAME=` | Assign a friendly name to this instance (no spaces). Required on first start. |
+| `CLI_ARGS=` | Optionally pass additional cli arguments to `fah-client` on container start. |
 
 ### Volume Mappings (`-v`)
 
@@ -287,6 +296,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **25.06.24:** - ***Breaking Changes*** - Please see the Application Setup section for more details. Restructure image for F@H v8.
 * **15.06.24:** - Rebase to Ubuntu Noble, add optional cli args.
 * **14.12.22:** - Rebase to Ubuntu Jammy, migrate to s6v3.
 * **15.01.22:** - Rebase to Ubuntu Focal. Add arm64v8 builds (cpu only). Increase verbosity about gpu driver permission settings.
