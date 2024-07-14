@@ -67,9 +67,9 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - BASE_URL=/ombi #optional
+      - BASE_URL=/ #optional
     volumes:
-      - /path/to/appdata/config:/config
+      - /path/to/ombi/config:/config
     ports:
       - 3579:3579
     restart: unless-stopped
@@ -83,9 +83,9 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
-  -e BASE_URL=/ombi `#optional` \
+  -e BASE_URL=/ `#optional` \
   -p 3579:3579 \
-  -v /path/to/appdata/config:/config \
+  -v /path/to/ombi/config:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/ombi:latest
 ```
@@ -107,7 +107,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
-| `BASE_URL=/ombi` | Subfolder can optionally be defined as an env variable for reverse proxies. Keep in mind that once this value is defined, the gui setting for base url no longer works. To use the gui setting, remove this env variable. |
+| `BASE_URL=/` | Subfolder can optionally be defined as an env variable for reverse proxies. Keep in mind that once this value is defined, the gui setting for base url no longer works. To use the gui setting, remove this env variable. |
 
 ### Volume Mappings (`-v`)
 
@@ -283,6 +283,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **08.07.24:** - Rebase to Ubuntu Noble.
 * **01.07.23:** - Deprecate armhf. As announced [here](https://www.linuxserver.io/blog/a-farewell-to-arm-hf)
 * **11.09.22:** - Migrate to s6v3.
 * **01.05.22:** - Rebase to Jammy.
