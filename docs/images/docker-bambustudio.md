@@ -106,6 +106,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
+      - DARK_MODE=true #optional
     volumes:
       - /path/to/config:/config
     ports:
@@ -123,6 +124,7 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
+  -e DARK_MODE=true `#optional` \
   -p 3000:3000 \
   -p 3001:3001 \
   -v /path/to/config:/config \
@@ -148,6 +150,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
+| `DARK_MODE=true` | Set this to true to enable dark mode for Bambu Studio. |
 
 ### Volume Mappings (`-v`)
 
@@ -324,6 +327,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **29.07.24:** - Add required fonts and environment variable for dark mode.
 * **10.02.24:** - Update Readme with new env vars.
 * **08.02.24:** - Fix printer camera by ingesting Fedora Appimage, Add program icon for PWA ingestion.
 * **15.11.23:** - Initial release.
