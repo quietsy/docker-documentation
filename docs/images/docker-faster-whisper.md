@@ -289,4 +289,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **18.07.24:** - Rebase to Ubuntu Noble.
+* **19.05.24:** - Bump CUDA to 12 on GPU branch.
+* **08.01.24:** - Add GPU branch.
 * **25.11.23:** - Initial Release.
