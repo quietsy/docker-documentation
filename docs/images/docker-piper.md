@@ -63,7 +63,7 @@ services:
       - PIPER_SPEAKER=0 #optional
       - PIPER_PROCS=1 #optional
     volumes:
-      - /path/to/data:/config
+      - /path/to/piper/data:/config
     ports:
       - 10200:10200
     restart: unless-stopped
@@ -84,7 +84,7 @@ docker run -d \
   -e PIPER_SPEAKER=0 `#optional` \
   -e PIPER_PROCS=1 `#optional` \
   -p 10200:10200 \
-  -v /path/to/data:/config \
+  -v /path/to/piper/data:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/piper:latest
 ```
@@ -287,4 +287,5 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **18.07.24:** - Rebase to Ubuntu Noble.
 * **25.11.23:** - Initial Release.
