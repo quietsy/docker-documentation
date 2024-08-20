@@ -133,7 +133,7 @@ services:
       - TZ=Etc/UTC
       - SUBFOLDER=/ #optional
     volumes:
-      - /path/to/config:/config
+      - /path/to/blender/config:/config
     ports:
       - 3000:3000
       - 3001:3001
@@ -152,7 +152,7 @@ docker run -d \
   -e SUBFOLDER=/ `#optional` \
   -p 3000:3000 \
   -p 3001:3001 \
-  -v /path/to/config:/config \
+  -v /path/to/blender/config:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/blender:latest
 ```
@@ -352,6 +352,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **19.08.24:** - Rebase to noble.
 * **10.02.24:** - Update Readme with new env vars and ingest proper PWA icon.
 * **18.03.23:** - Rebase to KasmVNC base image.
 * **13.12.22:** - Rebase to Jammy, migrate to s6v3.
