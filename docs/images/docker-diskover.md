@@ -78,10 +78,10 @@ services:
       - elasticsearch
   elasticsearch:
     container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=true
+      - xpack.security.enabled=false
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     ulimits:
@@ -111,8 +111,6 @@ docker run -d \
   -e TZ=Etc/UTC \
   -e ES_HOST=elasticsearch \
   -e ES_PORT=9200 \
-  -e ES_USER=elastic \
-  -e ES_PASS=changeme \
   -p 80:80 \
   -v /path/to/diskover/config:/config \
   -v /path/to/diskover/data:/data \
@@ -139,8 +137,6 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
 | `ES_HOST=elasticsearch` | ElasticSearch host (optional) |
 | `ES_PORT=9200` | ElasticSearch port (optional) |
-| `ES_USER=elastic` | ElasticSearch username (optional) |
-| `ES_PASS=changeme` | ElasticSearch password (optional) |
 
 ### Volume Mappings (`-v`)
 
@@ -317,6 +313,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **06.09.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
 * **06.03.24:** - Existing users should update: site-confs/default.conf - Cleanup default site conf.
 * **06.03.24:** - Rebase to Alpine 3.19 with php 8.3.
 * **25.05.23:** - Rebase to Alpine 3.18, deprecate armhf.
