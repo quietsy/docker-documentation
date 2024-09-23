@@ -94,6 +94,8 @@ services:
     image: lscr.io/linuxserver/kasm:latest
     container_name: kasm
     privileged: true
+    security_opt:
+      - apparmor:rootlesskit #optional
     environment:
       - KASM_PORT=443
       - DOCKER_HUB_USERNAME=USER #optional
@@ -116,6 +118,7 @@ services:
 docker run -d \
   --name=kasm \
   --privileged \
+  --security-opt apparmor=rootlesskit `#optional` \
   -e KASM_PORT=443 \
   -e DOCKER_HUB_USERNAME=USER `#optional` \
   -e DOCKER_HUB_PASSWORD=PASS `#optional` \
@@ -163,6 +166,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :-----:   | --- |
+| `--security-opt apparmor=rootlesskit` | Some hosts require this on top of privileged for namespacing to work properly inside the DinD layer. |
 
 ## Environment variables from files (Docker secrets)
 
@@ -309,6 +313,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **17.09.24:** - Update base image for 1.16.0 release and fix Nvidia support.
 * **16.02.24:** - Update base image for 1.15.0 release.
 * **22.08.23:** - Update base image for 1.14.0 release.
 * **07.04.23:** - Add mod layer for ingesting LSIO images for 1.13.0 release.
