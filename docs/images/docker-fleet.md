@@ -39,6 +39,10 @@ Navigate to `http://your_ip_here:8080` to display the home page. If `DATABASE` i
 initial user via `http://your_ip_here:8080/setup`. Once done, that page will no longer be available. A restart is preferable as it will remove the page altogether.
 Once complete, you can log into the app via `http://your_ip_here:8080/login` to manage your repositories.
 
+## Read-Only Operation
+
+This image can be run with a read-only container filesystem. For details please [read the docs](https://docs.linuxserver.io/misc/read-only/).
+
 ## Usage
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
@@ -256,7 +260,7 @@ Below are the instructions for updating containers:
 
 ### Image Update Notifications - Diun (Docker Image Update Notifier)
 
-!!! tip 
+!!! tip
 
     We recommend [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended or supported.
 
