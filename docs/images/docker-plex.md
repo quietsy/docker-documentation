@@ -38,17 +38,17 @@ The architectures supported by this image are:
 
 Webui can be found at `<your-ip>:32400/web`
 
-!!! note Updates
+!!! note "Updates"
 
     If there is no value set for the VERSION variable, then no updates will take place.
 
-!!! note New users
+!!! note "New users"
 
     For new users, no updates will take place on the first run of the container as there is no preferences file to read your token from, to update restart the Docker container after logging in through the webui.
 
 Valid settings for VERSION are:-
 
-!!! info Plexpass
+!!! info "Plexpass"
 
     YOU CANNOT UPDATE TO A PLEXPASS ONLY (BETA) VERSION IF YOU ARE NOT LOGGED IN WITH A PLEXPASS ACCOUNT.
 
@@ -327,7 +327,7 @@ Below are the instructions for updating containers:
 
 ### Image Update Notifications - Diun (Docker Image Update Notifier)
 
-!!! tip 
+!!! tip
 
     We recommend [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended or supported.
 
