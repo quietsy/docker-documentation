@@ -31,7 +31,7 @@ The architectures supported by this image are:
 | Architecture | Available | Tag |
 | :----: | :----: | ---- |
 | x86-64 | ✅ | amd64-\<version tag\> |
-| arm64 | ❌ | |
+| arm64 | ✅ | arm64v8-\<version tag\> |
 | armhf | ❌ | |
 
 ## Application Setup
@@ -320,4 +320,5 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **09.10.24:** - Add aarch64 support.
 * **26.04.24:** - Initial release.
