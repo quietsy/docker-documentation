@@ -121,7 +121,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - JELLYFIN_PublishedServerUrl=192.168.0.5 #optional
+      - JELLYFIN_PublishedServerUrl=http://192.168.0.5 #optional
     volumes:
       - /path/to/jellyfin/library:/config
       - /path/to/tvseries:/data/tvshows
@@ -142,7 +142,7 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
-  -e JELLYFIN_PublishedServerUrl=192.168.0.5 `#optional` \
+  -e JELLYFIN_PublishedServerUrl=http://192.168.0.5 `#optional` \
   -p 8096:8096 \
   -p 8920:8920 `#optional` \
   -p 7359:7359/udp `#optional` \
@@ -174,7 +174,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
-| `JELLYFIN_PublishedServerUrl=192.168.0.5` | Set the autodiscovery response domain or IP address. |
+| `JELLYFIN_PublishedServerUrl=http://192.168.0.5` | Set the autodiscovery response domain or IP address, include http(s)://. |
 
 ### Volume Mappings (`-v`)
 
