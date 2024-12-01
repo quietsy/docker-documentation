@@ -75,6 +75,10 @@ The linuxserver version gives you access to `config/local.php` in `/config` to c
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -120,8 +124,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `80` | HTTP WebUI |
-| `443` | HTTPS WebUI |
+| `80:80` | HTTP WebUI |
+| `443:443` | HTTPS WebUI |
 
 ### Environment Variables (`-e`)
 
