@@ -55,7 +55,7 @@ On the initial setup screen, enter `/books` as your calibre library location.
 *Username:* admin
 *Password:* admin123
 
-If you lock yourself out or forget a password, you will need to specify the app.db similar to this: 
+If you lock yourself out or forget a password, you will need to specify the app.db similar to this:
 `docker exec -it calibre-web python3 /app/calibre-web/cps.py -p /config/app.db -s <user>:<pass>`
 If you fail to specify the proper db, it will appear to succeed, but it will not work.
 
@@ -70,6 +70,10 @@ This image contains the [kepubify](https://pgaskin.net/kepubify/) ebook conversi
 ## Usage
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
+
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
 
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
@@ -86,7 +90,7 @@ services:
       - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
       - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
     volumes:
-      - /path/to/data:/config
+      - /path/to/calibre-web/data:/config
       - /path/to/calibre/library:/books
     ports:
       - 8083:8083
@@ -104,7 +108,7 @@ docker run -d \
   -e DOCKER_MODS=linuxserver/mods:universal-calibre `#optional` \
   -e OAUTHLIB_RELAX_TOKEN_SCOPE=1 `#optional` \
   -p 8083:8083 \
-  -v /path/to/data:/config \
+  -v /path/to/calibre-web/data:/config \
   -v /path/to/calibre/library:/books \
   --restart unless-stopped \
   lscr.io/linuxserver/calibre-web:latest
@@ -118,7 +122,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `8083` | WebUI |
+| `8083:8083` | WebUI |
 
 ### Environment Variables (`-e`)
 
