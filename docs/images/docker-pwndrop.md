@@ -42,6 +42,10 @@ Access the web gui at `http://<your-ip>:8080/pwndrop` (replace `/pwndrop` with y
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -85,7 +89,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `8080` | web gui |
+| `8080:8080` | web gui |
 
 ### Environment Variables (`-e`)
 
