@@ -48,6 +48,10 @@ For more information check out the [Manyfold documentation](https://manyfold.app
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -97,7 +101,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3214` | Port for web frontend |
+| `3214:3214` | Port for web frontend |
 
 ### Environment Variables (`-e`)
 
