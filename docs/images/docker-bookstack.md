@@ -80,6 +80,10 @@ The container will copy an exemplary .env file to /config/www/.env on your host 
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -137,7 +141,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `80` | http/s web interface. |
+| `6875:80` | http/s web interface. |
 
 ### Environment Variables (`-e`)
 
