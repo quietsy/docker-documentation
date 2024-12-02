@@ -171,6 +171,10 @@ It is possible to install extra packages during container start using [universal
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -222,8 +226,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | VSCodium desktop gui. |
-| `3001` | HTTPS VSCodium desktop gui. |
+| `3000:3000` | VSCodium desktop gui. |
+| `3001:3001` | HTTPS VSCodium desktop gui. |
 
 ### Environment Variables (`-e`)
 
@@ -245,6 +249,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | :-----:   | --- |
 | `--shm-size=` | This is needed for electron applications to function properly. |
 | `--security-opt seccomp=unconfined` | For Docker Engine only, many modern gui apps need this to function on older hosts as syscalls are unknown to Docker. VSCodium runs in no-sandbox mode without it. |
+| `--cap-add=IPC_LOCK` | Required for keyring functionality. |
 
 ### Portainer notice
 
