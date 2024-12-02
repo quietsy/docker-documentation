@@ -171,6 +171,10 @@ It is possible to install extra packages during container start using [universal
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -179,6 +183,8 @@ services:
   mysql-workbench:
     image: lscr.io/linuxserver/mysql-workbench:latest
     container_name: mysql-workbench
+    cap_add:
+      - IPC_LOCK
     environment:
       - PUID=1000
       - PGID=1000
@@ -188,8 +194,6 @@ services:
     ports:
       - 3000:3000
       - 3001:3001
-    cap_add:
-      - IPC_LOCK
     restart: unless-stopped
 ```
 
@@ -198,13 +202,13 @@ services:
 ```bash
 docker run -d \
   --name=mysql-workbench \
+  --cap-add=IPC_LOCK \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
   -p 3000:3000 \
   -p 3001:3001 \
   -v /path/to/config:/config \
-  --cap-add="IPC_LOCK" \
   --restart unless-stopped \
   lscr.io/linuxserver/mysql-workbench:latest
 ```
@@ -217,8 +221,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | Mysql Workbench desktop gui. |
-| `3001` | Mysql Workbench desktop gui HTTPS. |
+| `3000:3000` | Mysql Workbench desktop gui. |
+| `3001:3001` | Mysql Workbench desktop gui HTTPS. |
 
 ### Environment Variables (`-e`)
 
@@ -238,7 +242,13 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :-----:   | --- |
-| `--cap-add=` | Required for keyring functionality |
+| `--cap-add=IPC_LOCK` | Required for keyring functionality. |
+
+### Portainer notice
+
+!!! warning
+
+    This image utilises `cap_add` or `sysctl` to work properly. This is not implemented properly in some versions of Portainer, thus this image may not work if deployed through Portainer.
 
 ## Environment variables from files (Docker secrets)
 
