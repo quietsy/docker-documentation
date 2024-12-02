@@ -53,6 +53,10 @@ As per [upstream request](https://github.com/minetest/minetest/releases/tag/5.8.
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -96,7 +100,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `30000/udp` | Port Minetest listens on (UDP). |
+| `30000:30000/udp` | Port Minetest listens on (UDP). |
 
 ### Environment Variables (`-e`)
 
@@ -281,6 +285,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **25.11.24:** - Add Prometheus metrics support.
 * **01.06.24:** - Rebase to Alpine 3.20.
 * **12.05.24:** - Unpin irrlicht, enable IPv6 support in default conf.
 * **10.05.24:** - Enable PostgreSQL backend and fix libspatialindex branch name.
