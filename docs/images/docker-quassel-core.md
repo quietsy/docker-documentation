@@ -99,6 +99,10 @@ docker create \
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -144,8 +148,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `4242` | The port quassel-core listens for connections on. |
-| `10113` | Optional Ident Port |
+| `4242:4242` | The port quassel-core listens for connections on. |
+| `113:10113` | Optional Ident Port |
 
 ### Environment Variables (`-e`)
 
