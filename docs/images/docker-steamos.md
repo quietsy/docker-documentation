@@ -42,11 +42,11 @@ The architectures supported by this image are:
 
 The following limitations currently exist:
 * You must run the desktop mode initially to login to Steam, then you can switch to `STARTUP=BIGPICTURE`
-* Sunshine is available in both desktop mode (KDE) and BIGPICTURE, but gamepads using Sunshine does not currently work. 
+* Sunshine is available in both desktop mode (KDE) and BIGPICTURE, but gamepads using Sunshine does not currently work.
 * In Desktop mode most proton games will kill off kwin_x11 and in turn disable keyboard and gamepad input. For remote play in Desktop mode it is mostly Valve or Linux native titles that function properly.
 * If games are not launching and are Windows based ensure you have forced a compatibility layer in it's settings to use Proton Experimental or Proton 8.
 * BIGPICTURE STARTUP mode connecting via Sunshine will have much better game compatibility and generally be less buggy. Titles are running how the Steam Deck expects them to inside a gamescope renderer, outside of the lack of gamepads this works identically to a Deck.
-* Sunshine auto discovery is not functional, you will need to manually enter the IP in your client. 
+* Sunshine auto discovery is not functional, you will need to manually enter the IP in your client.
 * Remote play does not function well in BIGPICTURE mode, this mode is optimized for a single resolution passed on boot using Sunshine.
 
 To improve compatibility we ingest drivers from vanilla Arch repos, The best experience will be with [DRI3](https://en.wikipedia.org/wiki/Direct_Rendering_Infrastructure) framework which is not available for NVIDIA. We recommend using a modern RDNA AMD card or Intel ARC card, but lower end GPUs might work for some games we do bundle all the drivers that are possible to install.
@@ -88,9 +88,9 @@ This container is based on [Docker Baseimage KasmVNC](https://github.com/linuxse
 
 **The Steam Link application will only function in Host or Macvlan networking modes**
 
-Steam network discovery in it's current state is pretty inflexible, to function locally it uses broadcast packets that cannot traverse subnets and this becomes a problem when using a Docker subnet. In the default configuration we recommend forwarding the ports and passing the underlying host's IP using the `HOST_IP` environment variable. When the container spins up it will set this IP as it's default route allowing remote play to function over a local network given the client does not have a firewall in the way blocking the traffic. If you never plan to use remote play or only plan on using it fully remote off your LAN through a Valve relay then you can essentially rip out all the logic for Steam port forwarding and passing the host ip to the container. 
+Steam network discovery in it's current state is pretty inflexible, to function locally it uses broadcast packets that cannot traverse subnets and this becomes a problem when using a Docker subnet. In the default configuration we recommend forwarding the ports and passing the underlying host's IP using the `HOST_IP` environment variable. When the container spins up it will set this IP as it's default route allowing remote play to function over a local network given the client does not have a firewall in the way blocking the traffic. If you never plan to use remote play or only plan on using it fully remote off your LAN through a Valve relay then you can essentially rip out all the logic for Steam port forwarding and passing the host ip to the container.
 
-Optimally [Macvlan](https://docs.docker.com/network/drivers/macvlan/) can be used to give this container a dedicated IP on your network and run closer to how a bridged VM would. This is the most compatible methodology and will avoid any potentially port conflicts. 
+Optimally [Macvlan](https://docs.docker.com/network/drivers/macvlan/) can be used to give this container a dedicated IP on your network and run closer to how a bridged VM would. This is the most compatible methodology and will avoid any potentially port conflicts.
 
 [Host Networking](https://docs.docker.com/network/drivers/host/) can also be used, but might run into a port conflict with what the container is trying to init and the underlying host.
 
@@ -104,6 +104,10 @@ It is possible to play games over KasmVNC, but it as a protocol is not currently
 ## Usage
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
+
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
 
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
@@ -185,13 +189,13 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | SteamOS desktop gui. |
-| `3001` | HTTPS SteamOS desktop gui. |
-| `27031-27036/udp` | Steam Remote Play Ports (UDP). |
-| `27031-27036` | Steam Remote Play Ports (TCP). |
-| `47984-47990` | Sunshine Ports (TCP). |
-| `48010-48010` | Sunshine Ports (TCP). |
-| `47998-48000/udp` | Sunshine Ports (UDP). |
+| `3000:3000` | SteamOS desktop gui. |
+| `3001:3001` | HTTPS SteamOS desktop gui. |
+| `27031-27036:27031-27036/udp` | Steam Remote Play Ports (UDP). |
+| `27031-27036:27031-27036` | Steam Remote Play Ports (TCP). |
+| `47984-47990:47984-47990` | Sunshine Ports (TCP). |
+| `48010-48010:48010-48010` | Sunshine Ports (TCP). |
+| `47998-48000:47998-48000/udp` | Sunshine Ports (UDP). |
 
 ### Environment Variables (`-e`)
 
@@ -227,6 +231,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `--shm-size=` | This is needed for the steam browser to function properly. |
 | `--security-opt seccomp=unconfined` | This is needed to allow kernel syscalls made by Steam. |
 | `--security-opt apparmor=unconfined` | For Debian/Ubuntu hosts Steam needs elevated perms that AppArmor blocks. |
+| `--cap-add=NET_ADMIN` |  |
 
 ### Portainer notice
 
