@@ -171,6 +171,10 @@ It is possible to install extra packages during container start using [universal
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -188,7 +192,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/config:/config
+      - /path/to/github-desktop/config:/config
     ports:
       - 3000:3000
       - 3001:3001
@@ -208,7 +212,7 @@ docker run -d \
   -e TZ=Etc/UTC \
   -p 3000:3000 \
   -p 3001:3001 \
-  -v /path/to/config:/config \
+  -v /path/to/github-desktop/config:/config \
   --shm-size="1gb" \
   --restart unless-stopped \
   lscr.io/linuxserver/github-desktop:latest
@@ -222,8 +226,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | Github Desktop gui. |
-| `3001` | HTTPS Github Desktop gui. |
+| `3000:3000` | Github Desktop gui. |
+| `3001:3001` | HTTPS Github Desktop gui. |
 
 ### Environment Variables (`-e`)
 
@@ -245,6 +249,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | :-----:   | --- |
 | `--shm-size=` | This is needed for electron applications to function properly. |
 | `--security-opt seccomp=unconfined` | For Docker Engine only, many modern gui apps need this to function on older hosts as syscalls are unknown to Docker. Github Desktop runs in no-sandbox mode without it. |
+| `--cap-add=IPC_LOCK` | Required for keyring functionality. |
 
 ### Portainer notice
 
