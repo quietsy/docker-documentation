@@ -140,6 +140,10 @@ It is possible to install extra packages during container start using [universal
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -158,7 +162,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/config:/config
+      - /path/to/wireshark/config:/config
     ports:
       - 3000:3000 #optional
       - 3001:3001 #optional
@@ -178,7 +182,7 @@ docker run -d \
   -e TZ=Etc/UTC \
   -p 3000:3000 `#optional` \
   -p 3001:3001 `#optional` \
-  -v /path/to/config:/config \
+  -v /path/to/wireshark/config:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/wireshark:latest
 ```
@@ -191,8 +195,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | WireShark desktop gui, only use this if you are not using host mode and sniffing Docker network traffic. |
-| `3001` | WireShark desktop gui HTTPS, only use this if you are not using host mode and sniffing Docker network traffic. |
+| `3000:3000` | WireShark desktop gui, only use this if you are not using host mode and sniffing Docker network traffic. |
+| `3001:3001` | WireShark desktop gui HTTPS, only use this if you are not using host mode and sniffing Docker network traffic. |
 
 #### Networking (`--net`)
 
@@ -219,6 +223,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | Parameter | Function |
 | :-----:   | --- |
 | `--security-opt seccomp=unconfined` | For Docker Engine only, many modern gui apps need this to function on older hosts as syscalls are unknown to Docker. |
+| `--cap-add=NET_ADMIN` | Required to allow packet capture. |
 
 ### Portainer notice
 
