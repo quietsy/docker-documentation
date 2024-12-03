@@ -54,6 +54,10 @@ If no value is set it will default to 512MB.
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -105,8 +109,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `2202` | The library port. |
-| `2203` | The admin port. |
+| `2202:2202` | The library port. |
+| `2203:2203` | The admin port. |
 
 ### Environment Variables (`-e`)
 
