@@ -134,6 +134,10 @@ If you are using a reverse proxy which validates certificates, you need to [disa
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -209,15 +213,15 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `8443` | Unifi web admin port |
-| `3478/udp` | Unifi STUN port |
-| `10001/udp` | Required for AP discovery |
-| `8080` | Required for device communication |
-| `1900/udp` | Required for `Make controller discoverable on L2 network` option |
-| `8843` | Unifi guest portal HTTPS redirect port |
-| `8880` | Unifi guest portal HTTP redirect port |
-| `6789` | For mobile throughput test |
-| `5514/udp` | Remote syslog port |
+| `8443:8443` | Unifi web admin port |
+| `3478:3478/udp` | Unifi STUN port |
+| `10001:10001/udp` | Required for AP discovery |
+| `8080:8080` | Required for device communication |
+| `1900:1900/udp` | Required for `Make controller discoverable on L2 network` option |
+| `8843:8843` | Unifi guest portal HTTPS redirect port |
+| `8880:8880` | Unifi guest portal HTTP redirect port |
+| `6789:6789` | For mobile throughput test |
+| `5514:5514/udp` | Remote syslog port |
 
 ### Environment Variables (`-e`)
 
