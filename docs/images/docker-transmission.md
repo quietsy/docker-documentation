@@ -64,6 +64,10 @@ Use `PEERPORT` to specify the port(s) Transmission should listen on.  This disab
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -125,9 +129,9 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `9091` | WebUI |
-| `51413` | Torrent Port TCP |
-| `51413/udp` | Torrent Port UDP |
+| `9091:9091` | WebUI |
+| `51413:51413` | Torrent Port TCP |
+| `51413:51413/udp` | Torrent Port UDP |
 
 ### Environment Variables (`-e`)
 
