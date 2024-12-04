@@ -63,6 +63,10 @@ After making these changes, you'll need to restart the Docker container for the 
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -124,7 +128,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `80` | http gui |
+| `80:80` | http gui |
 
 ### Environment Variables (`-e`)
 
@@ -318,6 +322,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **03.12.24:** - Verify build artifacts with cosign.
 * **27.05.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
 * **18.01.24:** - Add php-sodium.
 * **13.01.24:** - Rebase to Alpine 3.19 with php 8.3.
