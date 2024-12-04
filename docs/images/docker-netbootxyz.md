@@ -52,7 +52,7 @@ To use this image you need an existing DHCP server where you can set this TFTP s
 #### PFSense
 Services -> DHCP Server
 
-Set both the option for \"TFTP Server\" and the options under the Advanced \"Network Booting\" section.\n
+Set both the option for \"TFTP Server\" and the options under the Advanced \"Network Booting\" section.
 * check enable
 * Next server- IP used for TFTP Server
 * Default BIOS file name- `netboot.xyz.kpxe`
@@ -134,6 +134,10 @@ This image also contains `netboot.xyz.efi` which can be used to boot using UEFI 
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -191,9 +195,9 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | Web configuration interface. |
-| `69/udp` | TFTP Port. |
-| `80` | NGINX server for hosting assets. |
+| `3000:3000` | Web configuration interface. |
+| `69:69/udp` | TFTP Port. |
+| `8080:80` | NGINX server for hosting assets. |
 
 ### Environment Variables (`-e`)
 
