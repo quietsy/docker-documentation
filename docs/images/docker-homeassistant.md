@@ -79,6 +79,10 @@ For the [Ping][ping0] integration to work, the capability `NET_RAW` must be adde
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -125,7 +129,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `8123` | Application WebUI, only use this if you are not using host mode. |
+| `8123:8123` | Application WebUI, only use this if you are not using host mode. |
 
 #### Networking (`--net`)
 
