@@ -53,6 +53,10 @@ For local backups select `/backups` as the destination. For more information see
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -104,7 +108,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `8200` | http gui |
+| `8200:8200` | http gui |
 
 ### Environment Variables (`-e`)
 
@@ -293,6 +297,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **03.12.24:** - Add mscorefonts for captcha support.
 * **29.11.24:** - Rebase to Noble, add support for settings DB encryption.
 * **15.02.23:** - Rebase to Jammy.
 * **03.08.22:** - Deprecate armhf.
