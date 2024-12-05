@@ -107,6 +107,10 @@ The folder names for systems are:
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -156,9 +160,9 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | Rom/artwork management interface, used to generate/manage config files and download artwork |
-| `80` | Emulation frontend containing static web files used to browse and launch games |
-| `4001` | IPFS peering port, if you want to participate in the P2P network to distribute frontend artwork please forward this to the Internet |
+| `3000:3000` | Rom/artwork management interface, used to generate/manage config files and download artwork |
+| `80:80` | Emulation frontend containing static web files used to browse and launch games |
+| `4001:4001` | IPFS peering port, if you want to participate in the P2P network to distribute frontend artwork please forward this to the Internet |
 
 ### Environment Variables (`-e`)
 
