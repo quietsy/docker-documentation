@@ -42,6 +42,10 @@ Access the web UI at `<your-ip>:80`, for more information check out the [project
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -107,7 +111,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `80` | Web UI |
+| `80:80` | Web UI |
 
 ### Environment Variables (`-e`)
 
