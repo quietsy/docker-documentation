@@ -54,6 +54,10 @@ Copy your `user-avatars`, `project-background-images`, and `attachments` folders
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -111,7 +115,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `1337` | Planka web UI. |
+| `1337:1337` | Planka web UI. |
 
 ### Environment Variables (`-e`)
 
