@@ -55,6 +55,10 @@ For general usage please see the pyLoad wiki [here](https://github.com/pyload/py
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -100,8 +104,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `8000` | Allows HTTP access to the application |
-| `9666` | Click'n'Load port. |
+| `8000:8000` | Allows HTTP access to the application |
+| `9666:9666` | Click'n'Load port. |
 
 ### Environment Variables (`-e`)
 
