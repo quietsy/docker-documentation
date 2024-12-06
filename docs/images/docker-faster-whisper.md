@@ -59,6 +59,10 @@ This image can be run with a read-only container filesystem. For details please 
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -75,7 +79,7 @@ services:
       - WHISPER_BEAM=1 #optional
       - WHISPER_LANG=en #optional
     volumes:
-      - /path/to/data:/config
+      - /path/to/faster-whisper/data:/config
     ports:
       - 10300:10300
     restart: unless-stopped
@@ -93,7 +97,7 @@ docker run -d \
   -e WHISPER_BEAM=1 `#optional` \
   -e WHISPER_LANG=en `#optional` \
   -p 10300:10300 \
-  -v /path/to/data:/config \
+  -v /path/to/faster-whisper/data:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/faster-whisper:latest
 ```
@@ -106,7 +110,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `10300` | Wyoming connection port. |
+| `10300:10300` | Wyoming connection port. |
 
 ### Environment Variables (`-e`)
 
@@ -129,6 +133,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :-----:   | --- |
+| `--read-only=true` | Run container with a read-only filesystem. Please [read the docs](https://docs.linuxserver.io/misc/read-only/). |
 
 ## Environment variables from files (Docker secrets)
 
@@ -293,6 +298,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **05.12.24:** - Build from Github releases rather than Pypi.
 * **18.07.24:** - Rebase to Ubuntu Noble.
 * **19.05.24:** - Bump CUDA to 12 on GPU branch.
 * **08.01.24:** - Add GPU branch.
