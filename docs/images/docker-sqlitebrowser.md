@@ -138,6 +138,10 @@ It is possible to install extra packages during container start using [universal
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -184,8 +188,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | Sqlitebrowser desktop gui. |
-| `3001` | Sqlitebrowser desktop gui HTTPS. |
+| `3000:3000` | Sqlitebrowser desktop gui. |
+| `3001:3001` | Sqlitebrowser desktop gui HTTPS. |
 
 ### Environment Variables (`-e`)
 
@@ -370,6 +374,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **06.12.24:** - Rebase to Alpine 3.21.
 * **23.05.24:** - Rebase to Alpine 3.20.
 * **10.02.24:** - Update Readme with new env vars and ingest proper PWA icon.
 * **02.01.24:** - Rebase to Alpine 3.19.
