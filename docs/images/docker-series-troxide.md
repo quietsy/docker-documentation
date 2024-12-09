@@ -71,6 +71,10 @@ This container is based on [Docker Baseimage KasmVNC](https://github.com/linuxse
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -116,8 +120,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `3000` | Series Troxide desktop gui. |
-| `3001` | HTTPS Series Troxide desktop gui. |
+| `3000:3000` | Series Troxide desktop gui. |
+| `3001:3001` | HTTPS Series Troxide desktop gui. |
 
 ### Environment Variables (`-e`)
 
