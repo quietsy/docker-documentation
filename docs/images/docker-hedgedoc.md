@@ -310,6 +310,54 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "hedgedoc:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-hedgedoc-config -> init-config-end
+      init-os-end -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      init-config -> init-hedgedoc-config
+      base -> init-migrations
+      base -> init-mods
+      init-config-end -> init-mods
+      init-mods -> init-mods-end
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      base -> init-os-end
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-migrations -> init-os-end
+      init-custom-files -> init-services
+      init-mods-end -> init-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-hedgedoc
+      svc-hedgedoc -> legacy-services
+    }
+    Base Images: {
+      "baseimage-alpine:3.20"
+    }
+    "hedgedoc:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **21.06.24:** - Allow using `CMD_DB_DIALECT` to set up the `CMD_DB_URL`.
