@@ -416,6 +416,62 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "rdesktop:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-rdesktop-end -> init-config
+      init-config -> init-config-end
+      init-os-end -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      init-os-end -> init-keygen
+      base -> init-migrations
+      base -> init-mods
+      init-config-end -> init-mods
+      init-mods -> init-mods-end
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      base -> init-os-end
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-migrations -> init-os-end
+      init-keygen -> init-rdesktop
+      init-keygen -> init-rdesktop-config
+      init-video -> init-rdesktop-end
+      init-custom-files -> init-services
+      init-mods-end -> init-services
+      init-rdesktop -> init-video
+      init-rdesktop-config -> init-video
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-xrdp
+      svc-xrdp-sesman -> svc-xrdp
+      svc-xrdp -> legacy-services
+      init-services -> svc-xrdp-sesman
+      svc-xrdp-sesman -> legacy-services
+    }
+    Base Images: {
+      "baseimage-rdesktop:alpine320" <- "baseimage-alpine:3.20"
+    }
+    "rdesktop:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **06.08.24:** - Refresh all images using new bases, add Debian, bump Ubuntu to Noble.
