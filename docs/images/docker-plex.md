@@ -366,6 +366,53 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "plex:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-crontab-config -> init-config-end
+      init-plex-update -> init-config-end
+      init-config -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      base -> init-migrations
+      init-config-end -> init-mods
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-config -> init-plex-chown
+      init-plex-chown -> init-plex-claim
+      init-plex-claim -> init-plex-gid-video
+      init-plex-gid-video -> init-plex-update
+      init-custom-files -> init-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-plex
+      svc-plex -> legacy-services
+    }
+    Base Images: {
+      "baseimage-ubuntu:noble"
+    }
+    "plex:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **04.11.24:** - Add Nvidia capability needed for h265
