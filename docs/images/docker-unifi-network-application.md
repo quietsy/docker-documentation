@@ -412,6 +412,50 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "unifi-network-application:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-crontab-config -> init-config-end
+      init-unifi-network-application-config -> init-config-end
+      init-config -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      base -> init-migrations
+      init-config-end -> init-mods
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-custom-files -> init-services
+      init-config -> init-unifi-network-application-config
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-unifi-network-application
+      svc-unifi-network-application -> legacy-services
+    }
+    Base Images: {
+      "baseimage-ubuntu:noble"
+    }
+    "unifi-network-application:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **11.08.24:** - **Important**: The mongodb init instructions have been updated to enable auth ([RBAC](https://www.mongodb.com/docs/manual/core/authorization/#role-based-access-control)). We have been notified that if RBAC is not enabled, the official mongodb container allows remote access to the db contents over port 27017 without credentials. If you set up the mongodb container with the old instructions we provided, you should not map or expose port 27017. If you would like to enable auth, the easiest way is to create new instances of both unifi and mongodb with the new instructions and restore unifi from a backup.
