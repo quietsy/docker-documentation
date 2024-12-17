@@ -315,6 +315,58 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "kasm:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-config-kasm -> init-config-end
+      init-config -> init-config-kasm
+      init-os-end -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      base -> init-migrations
+      base -> init-mods
+      init-config-end -> init-mods
+      init-mods -> init-mods-end
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      base -> init-os-end
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-migrations -> init-os-end
+      init-custom-files -> init-services
+      init-mods-end -> init-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-config-kasm -> svc-docker
+      init-services -> svc-docker
+      svc-docker -> legacy-services
+      init-config-kasm -> svc-kasm-wizard
+      init-services -> svc-kasm-wizard
+      svc-kasm-wizard -> legacy-services
+    }
+    Base Images: {
+      "baseimage-ubuntu:jammy"
+    }
+    "kasm:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **09.11.24:** - Update base image for 1.16.1 release.
