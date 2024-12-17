@@ -41,6 +41,31 @@ The container can be accessed at:
 * http://yourhost:8080/
 * https://yourhost:8181/
 
+### Hardware Acceleration
+
+Many desktop applications need access to a GPU to function properly and even some Desktop Environments have compositor effects that will not function without a GPU. However this is not a hard requirement and all base images will function without a video device mounted into the container.
+
+#### Intel/ATI/AMD
+
+To leverage hardware acceleration you will need to mount /dev/dri video device inside of the container.
+
+```text
+--device=/dev/dri:/dev/dri
+```
+
+We will automatically ensure the abc user inside of the container has the proper permissions to access this device.
+
+#### Nvidia
+
+Hardware acceleration users for Nvidia will need to install the container runtime provided by Nvidia on their host, instructions can be found here:
+https://github.com/NVIDIA/nvidia-container-toolkit
+
+We automatically add the necessary environment variable that will utilise all the features available on a GPU on the host. Once nvidia-container-toolkit is installed on your host you will need to re/create the docker container with the nvidia container runtime `--runtime=nvidia` and add an environment variable `-e NVIDIA_VISIBLE_DEVICES=all` (can also be set to a specific gpu's UUID, this can be discovered by running `nvidia-smi --query-gpu=gpu_name,gpu_uuid --format=csv` ). NVIDIA automatically mounts the GPU and drivers from your host into the container.
+
+#### Arm Devices
+
+Best effort is made to install tools to allow mounting in /dev/dri on Arm devices. In most cases if /dev/dri exists on the host it should just work. If running a Raspberry Pi 4 be sure to enable `dtoverlay=vc4-fkms-v3d` in your usercfg.txt.
+
 **Modern GUI desktop apps have issues with the latest Docker and syscall compatibility, you can use Docker with the `--security-opt seccomp=unconfined` setting to allow these syscalls on hosts with older Kernels or libseccomp**
 
 ### Security
@@ -95,7 +120,7 @@ To install cjk fonts on startup as an example pass the environment variables (Al
 
 The web interface has the option for "IME Input Mode" in Settings which will allow non english characters to be used from a non en_US keyboard on the client. Once enabled it will perform the same as a local Linux installation set to your locale.
 
-### DRI3 GPU Acceleration
+### DRI3 GPU Acceleration (KasmVNC interface)
 
 For accelerated apps or games, render devices can be mounted into the container and leveraged by applications using:
 
@@ -112,7 +137,7 @@ This feature only supports **Open Source** GPU drivers:
 The `DRINODE` environment variable can be used to point to a specific GPU.
 Up to date information can be found [here](https://www.kasmweb.com/kasmvnc/docs/master/gpu_acceleration.html)
 
-### Nvidia GPU Support
+### Nvidia GPU Support (KasmVNC interface)
 
 **Nvidia support is not compatible with Alpine based images as Alpine lacks Nvidia drivers**
 
@@ -166,31 +191,6 @@ It is possible to install extra packages during container start using [universal
     - DOCKER_MODS=linuxserver/mods:universal-package-install
     - INSTALL_PACKAGES=libfuse2|git|gdb
 ```
-
-### Hardware Acceleration
-
-Many desktop applications need access to a GPU to function properly and even some Desktop Environments have compositor effects that will not function without a GPU. However this is not a hard requirement and all base images will function without a video device mounted into the container.
-
-#### Intel/ATI/AMD
-
-To leverage hardware acceleration you will need to mount /dev/dri video device inside of the container.
-
-```text
---device=/dev/dri:/dev/dri
-```
-
-We will automatically ensure the abc user inside of the container has the proper permissions to access this device.
-
-#### Nvidia
-
-Hardware acceleration users for Nvidia will need to install the container runtime provided by Nvidia on their host, instructions can be found here:
-https://github.com/NVIDIA/nvidia-container-toolkit
-
-We automatically add the necessary environment variable that will utilise all the features available on a GPU on the host. Once nvidia-container-toolkit is installed on your host you will need to re/create the docker container with the nvidia container runtime `--runtime=nvidia` and add an environment variable `-e NVIDIA_VISIBLE_DEVICES=all` (can also be set to a specific gpu's UUID, this can be discovered by running `nvidia-smi --query-gpu=gpu_name,gpu_uuid --format=csv` ). NVIDIA automatically mounts the GPU and drivers from your host into the container.
-
-#### Arm Devices
-
-Best effort is made to install tools to allow mounting in /dev/dri on Arm devices. In most cases if /dev/dri exists on the host it should just work. If running a Raspberry Pi 4 be sure to enable `dtoverlay=vc4-fkms-v3d` in your usercfg.txt.
 
 ## Usage
 
@@ -441,6 +441,73 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 ```
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
+
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "boinc:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-kasmvnc-end -> init-boinc-config
+      init-kasmvnc-end -> init-config
+      init-os-end -> init-config
+      init-boinc-config -> init-config-end
+      init-config -> init-config-end
+      init-crontab-config -> init-config-end
+      init-config -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      init-os-end -> init-kasmvnc
+      init-nginx -> init-kasmvnc-config
+      init-video -> init-kasmvnc-end
+      base -> init-migrations
+      init-config-end -> init-mods
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-kasmvnc -> init-nginx
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-custom-files -> init-services
+      init-kasmvnc-config -> init-video
+      init-services -> svc-boinc-client
+      svc-boinc-client -> legacy-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-de
+      svc-nginx -> svc-de
+      svc-de -> legacy-services
+      init-services -> svc-docker
+      svc-de -> svc-docker
+      svc-docker -> legacy-services
+      init-services -> svc-kasmvnc
+      svc-pulseaudio -> svc-kasmvnc
+      svc-kasmvnc -> legacy-services
+      init-services -> svc-kclient
+      svc-kasmvnc -> svc-kclient
+      svc-kclient -> legacy-services
+      init-services -> svc-nginx
+      svc-kclient -> svc-nginx
+      svc-nginx -> legacy-services
+      init-services -> svc-pulseaudio
+      svc-pulseaudio -> legacy-services
+    }
+    Base Images: {
+      "baseimage-kasmvnc:ubuntunoble" <- "baseimage-ubuntu:noble"
+    }
+    "boinc:latest" <- Base Images
+    ```
 
 ## Versions
 
