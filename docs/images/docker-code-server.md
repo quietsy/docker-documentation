@@ -304,6 +304,50 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "code-server:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-config -> init-code-server
+      init-os-end -> init-config
+      init-code-server -> init-config-end
+      init-config -> init-config-end
+      init-crontab-config -> init-config-end
+      init-config -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      base -> init-migrations
+      init-config-end -> init-mods
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-custom-files -> init-services
+      init-services -> svc-code-server
+      svc-code-server -> legacy-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+    }
+    Base Images: {
+      "baseimage-ubuntu:noble"
+    }
+    "code-server:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **13.10.24:** - Only chown config folder when change to ownership or new install is detected.
