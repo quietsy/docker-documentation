@@ -95,7 +95,7 @@ To install cjk fonts on startup as an example pass the environment variables (Al
 
 The web interface has the option for "IME Input Mode" in Settings which will allow non english characters to be used from a non en_US keyboard on the client. Once enabled it will perform the same as a local Linux installation set to your locale.
 
-### DRI3 GPU Acceleration
+### DRI3 GPU Acceleration (KasmVNC interface)
 
 For accelerated apps or games, render devices can be mounted into the container and leveraged by applications using:
 
@@ -112,7 +112,7 @@ This feature only supports **Open Source** GPU drivers:
 The `DRINODE` environment variable can be used to point to a specific GPU.
 Up to date information can be found [here](https://www.kasmweb.com/kasmvnc/docs/master/gpu_acceleration.html)
 
-### Nvidia GPU Support
+### Nvidia GPU Support (KasmVNC interface)
 
 **Nvidia support is not compatible with Alpine based images as Alpine lacks Nvidia drivers**
 
@@ -410,6 +410,69 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 ```
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
+
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "msedge:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-kasmvnc-end -> init-config
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-crontab-config -> init-config-end
+      init-config -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      init-os-end -> init-kasmvnc
+      init-nginx -> init-kasmvnc-config
+      init-video -> init-kasmvnc-end
+      base -> init-migrations
+      init-config-end -> init-mods
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-kasmvnc -> init-nginx
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-custom-files -> init-services
+      init-kasmvnc-config -> init-video
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-de
+      svc-nginx -> svc-de
+      svc-de -> legacy-services
+      init-services -> svc-docker
+      svc-de -> svc-docker
+      svc-docker -> legacy-services
+      init-services -> svc-kasmvnc
+      svc-pulseaudio -> svc-kasmvnc
+      svc-kasmvnc -> legacy-services
+      init-services -> svc-kclient
+      svc-kasmvnc -> svc-kclient
+      svc-kclient -> legacy-services
+      init-services -> svc-nginx
+      svc-kclient -> svc-nginx
+      svc-nginx -> legacy-services
+      init-services -> svc-pulseaudio
+      svc-pulseaudio -> legacy-services
+    }
+    Base Images: {
+      "baseimage-kasmvnc:debianbookworm" <- "baseimage-debian:bookworm"
+    }
+    "msedge:latest" <- Base Images
+    ```
 
 ## Versions
 
