@@ -292,6 +292,54 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "rsnapshot:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-rsnapshot-test -> init-config-end
+      init-os-end -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      base -> init-migrations
+      base -> init-mods
+      init-config-end -> init-mods
+      init-mods -> init-mods-end
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      base -> init-os-end
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-migrations -> init-os-end
+      init-config -> init-rsnapshot-config
+      init-rsnapshot-upgrade -> init-rsnapshot-test
+      init-rsnapshot-config -> init-rsnapshot-upgrade
+      init-custom-files -> init-services
+      init-mods-end -> init-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+    }
+    Base Images: {
+      "baseimage-alpine:3.20"
+    }
+    "rsnapshot:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **06.03.24:** - Rebase to Alpine 3.20.
