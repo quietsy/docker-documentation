@@ -71,6 +71,10 @@ This image can be run with a read-only container filesystem. For details please 
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+!!! info
+
+    Unless a parameter is flaged as 'optional', it is *mandatory* and a value must be provided.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -122,9 +126,9 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `8080` | WebUI |
-| `6881` | tcp connection port |
-| `6881/udp` | udp connection port |
+| `8080:8080` | WebUI |
+| `6881:6881` | tcp connection port |
+| `6881:6881/udp` | udp connection port |
 
 ### Environment Variables (`-e`)
 
@@ -147,6 +151,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :-----:   | --- |
+| `--read-only=true` | Run container with a read-only filesystem. Please [read the docs](https://docs.linuxserver.io/misc/read-only/). |
 
 ## Environment variables from files (Docker secrets)
 
@@ -308,6 +313,50 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 ```
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
+
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "qbittorrent:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-crontab-config -> init-config-end
+      init-qbittorrent-config -> init-config-end
+      init-config -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      base -> init-migrations
+      init-config-end -> init-mods
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-config -> init-qbittorrent-config
+      init-custom-files -> init-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-qbittorrent
+      svc-qbittorrent -> legacy-services
+    }
+    Base Images: {
+      "baseimage-alpine:edge"
+    }
+    "qbittorrent:latest" <- Base Images
+    ```
 
 ## Versions
 
