@@ -400,6 +400,69 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "steamos:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-kasmvnc-end -> init-config
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-crontab-config -> init-config-end
+      init-config -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      init-os-end -> init-kasmvnc
+      init-nginx -> init-kasmvnc-config
+      init-video -> init-kasmvnc-end
+      base -> init-migrations
+      init-config-end -> init-mods
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-kasmvnc -> init-nginx
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-custom-files -> init-services
+      init-kasmvnc-config -> init-video
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-de
+      svc-nginx -> svc-de
+      svc-de -> legacy-services
+      init-services -> svc-docker
+      svc-de -> svc-docker
+      svc-docker -> legacy-services
+      init-services -> svc-kasmvnc
+      svc-pulseaudio -> svc-kasmvnc
+      svc-kasmvnc -> legacy-services
+      init-services -> svc-kclient
+      svc-kasmvnc -> svc-kclient
+      svc-kclient -> legacy-services
+      init-services -> svc-nginx
+      svc-kclient -> svc-nginx
+      svc-nginx -> legacy-services
+      init-services -> svc-pulseaudio
+      svc-pulseaudio -> legacy-services
+    }
+    Base Images: {
+      "baseimage-kasmvnc:arch" <- "baseimage-arch:latest"
+    }
+    "steamos:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **23.05.24:** - Document how to get Nvidia to work.
