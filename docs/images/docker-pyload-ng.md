@@ -288,6 +288,54 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "pyload-ng:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-pyload-config -> init-config-end
+      init-os-end -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      base -> init-migrations
+      base -> init-mods
+      init-config-end -> init-mods
+      init-mods -> init-mods-end
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      base -> init-os-end
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-migrations -> init-os-end
+      init-config -> init-pyload-config
+      init-custom-files -> init-services
+      init-mods-end -> init-services
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-pyload
+      svc-pyload -> legacy-services
+    }
+    Base Images: {
+      "baseimage-alpine:3.19"
+    }
+    "pyload-ng:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **20.07.24:** - Revert to Alpine 3.19 due to inconsistent upstream addon support for Python 3.12.
