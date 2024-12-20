@@ -40,6 +40,14 @@ The web app and the server are both accessible at `http://SERVERIP:8088`.
 
 Note: It is recommended to use `http` as the external proto with a reverse proxy due to `https` not working with external plex clients.
 
+## Read-Only Operation
+
+This image can be run with a read-only container filesystem. For details please [read the docs](https://docs.linuxserver.io/misc/read-only/).
+
+## Non-Root Operation
+
+This image can be run with a non-root user. For details please [read the docs](https://docs.linuxserver.io/misc/non-root/).
+
 ## Usage
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
@@ -99,6 +107,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :-----:   | --- |
+| `--read-only=true` | Run container with a read-only filesystem. Please [read the docs](https://docs.linuxserver.io/misc/read-only/). |
+| `--user=1000:1000` | Run container with a non-root user. Please [read the docs](https://docs.linuxserver.io/misc/non-root/). |
 
 ## Environment variables from files (Docker secrets)
 
@@ -287,6 +297,7 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **19.12.24:** - Add support for read-only and non-root operation.
 * **05.12.24:** - Rebase to Alpine 3.21.
 * **04.06.24:** - Rebase to Alpine 3.20.
 * **26.08.23:** - Rebase to Alpine 3.19. Remove deprecated `AUTOJOIN_ENABLED` & `AUTOJOIN_ROOM` options.
