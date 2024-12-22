@@ -306,6 +306,66 @@ docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
 
 Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64`.
 
+To help with development, we generate this dependency graph.
+
+??? info "Init dependency graph"
+
+    ```d2
+    "librespeed:latest": {
+      docker-mods
+      base {
+        fix-attr +\nlegacy cont-init
+      }
+      docker-mods -> base
+      legacy-services
+      custom services
+      init-services -> legacy-services
+      init-services -> custom services
+      custom services -> legacy-services
+      legacy-services -> ci-service-check
+      init-migrations -> init-adduser
+      init-nginx-end -> init-config
+      init-os-end -> init-config
+      init-config -> init-config-end
+      init-librespeed-config -> init-config-end
+      init-os-end -> init-crontab-config
+      init-mods-end -> init-custom-files
+      base -> init-envfile
+      init-os-end -> init-folders
+      init-php -> init-keygen
+      init-nginx-end -> init-librespeed-config
+      base -> init-migrations
+      base -> init-mods
+      init-config-end -> init-mods
+      init-version-checks -> init-mods
+      init-mods -> init-mods-end
+      init-mods-package-install -> init-mods-end
+      init-mods -> init-mods-package-install
+      init-samples -> init-nginx
+      init-permissions -> init-nginx-end
+      base -> init-os-end
+      init-adduser -> init-os-end
+      init-envfile -> init-os-end
+      init-migrations -> init-os-end
+      init-keygen -> init-permissions
+      init-nginx -> init-php
+      init-folders -> init-samples
+      init-custom-files -> init-services
+      init-mods-end -> init-services
+      init-config-end -> init-version-checks
+      init-services -> svc-cron
+      svc-cron -> legacy-services
+      init-services -> svc-nginx
+      svc-nginx -> legacy-services
+      init-services -> svc-php-fpm
+      svc-php-fpm -> legacy-services
+    }
+    Base Images: {
+      "baseimage-alpine-nginx:3.20" <- "baseimage-alpine:3.20"
+    }
+    "librespeed:latest" <- Base Images
+    ```
+
 ## Versions
 
 * **27.06.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
