@@ -36,9 +36,9 @@ The architectures supported by this image are:
 
 ## Application Setup
 
-*IMPORTANT* This image no longer supports MSSQL since being migrated to PHP7, if you want MSSQL support please use the tag `linuxserver/projectsend:r1053-ls27`
-
 Requires a user and database in either mysql or mariadb.
+
+To set PHP options like max upload size please edit /config/php/projectsend.ini
 
 To use translations, follow the instructions [here](https://www.projectsend.org/how-to-use-translation-files/). The necessary paths are symlinked under `/config/translations` (note that the "templates" paths don't need `lang` subdirectories).
 
@@ -64,7 +64,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - MAX_UPLOAD=5000
     volumes:
       - /path/to/projectsend/config:/config
       - /path/to/data:/data
@@ -81,7 +80,6 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
-  -e MAX_UPLOAD=5000 \
   -p 80:80 \
   -v /path/to/projectsend/config:/config \
   -v /path/to/data:/data \
@@ -106,7 +104,6 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `PUID=1000` | for UserID - see below for explanation |
 | `PGID=1000` | for GroupID - see below for explanation |
 | `TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
-| `MAX_UPLOAD=5000` | To set maximum upload size (in MB), default if unset is 5000. |
 
 ### Volume Mappings (`-v`)
 
@@ -302,32 +299,27 @@ To help with development, we generate this dependency graph.
       init-nginx-end -> init-config
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-projectsend-config -> init-config-end
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       base -> init-envfile
       init-os-end -> init-folders
       init-php -> init-keygen
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-version-checks -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
       init-samples -> init-nginx
-      init-permissions -> init-nginx-end
-      base -> init-os-end
+      init-version-checks -> init-nginx-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-keygen -> init-permissions
       init-nginx -> init-php
       init-nginx-end -> init-projectsend-config
       init-folders -> init-samples
       init-custom-files -> init-services
-      init-mods-end -> init-services
-      init-config-end -> init-version-checks
+      init-permissions -> init-version-checks
       init-services -> svc-cron
       svc-cron -> legacy-services
       init-services -> svc-nginx
@@ -336,13 +328,14 @@ To help with development, we generate this dependency graph.
       svc-php-fpm -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine-nginx:3.20" <- "baseimage-alpine:3.20"
+      "baseimage-alpine-nginx:3.21" <- "baseimage-alpine:3.21"
     }
     "projectsend:latest" <- Base Images
     ```
 
 ## Versions
 
+* **21.12.24:** - Rebase to Alpine 3.21, move php .ini file to /config/php.
 * **06.06.24:** - Rebase to Alpine 3.20.
 * **23.12.23:** - Rebase to Alpine 3.19 with php 8.3.
 * **25.05.23:** - Rebase to Alpine 3.18, deprecate armhf.
