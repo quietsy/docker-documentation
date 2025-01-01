@@ -206,7 +206,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | Volume | Function |
 | :----: | --- |
 | `/config` | Contains all relevant configuration files. |
-| `/lib/modules` | Host kernel modules for situations where they're not already loaded. |
+| `/lib/modules` | Path to host kernel module for situations where it's not already loaded. |
 
 #### Miscellaneous Options
 
@@ -404,22 +404,18 @@ To help with development, we generate this dependency graph.
       init-migrations -> init-adduser
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-wireguard-confs -> init-config-end
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       base -> init-envfile
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
-      base -> init-os-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-custom-files -> init-services
-      init-mods-end -> init-services
       init-wireguard-module -> init-wireguard-confs
       init-config -> init-wireguard-module
       init-services -> svc-coredns
@@ -430,7 +426,7 @@ To help with development, we generate this dependency graph.
       svc-wireguard -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine:3.20"
+      "baseimage-alpine:3.21"
     }
     "wireguard:latest" <- Base Images
     ```
@@ -438,6 +434,7 @@ To help with development, we generate this dependency graph.
 ## Versions
 
 * **01.01.25:** - Deprecate legacy branch.
+* **20.12.24:** - Rebase to Alpine 3.21.
 * **13.08.24:** - Add `errors` plugin to default Corefile.
 * **23.07.24:** - Install kmod from alpine repository.
 * **24.05.24:** - Rebase to Alpine 3.20, install wireguard-tools from Alpine repo.
