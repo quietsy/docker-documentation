@@ -37,7 +37,7 @@ The architectures supported by this image are:
 
 You have to create a Spotify application through their [developer dashboard](https://developer.spotify.com/dashboard/applications) to get your Client ID and secret. Set the Redirect URI to match your APP_URL address with `/api/oauth/spotify/callback` included after the domain (i.e., `http://localhost/api/oauth/spotify/callback`).
 
-The application requires an external [mongodb database](https://hub.docker.com/_/mongo/), supported versions are 4.x, 5.x, and 6.x.
+The application requires an external [mongodb database](https://hub.docker.com/_/mongo/), supported versions are 5.x, 6.x, and 7.x.
 
 This ia an all-in-one container which includes both the server and client components. If you require these to be separate then please use the releases from the [your_spotify repo](https://github.com/Yooooomi/your_spotify).
 
@@ -307,31 +307,26 @@ To help with development, we generate this dependency graph.
       init-nginx-end -> init-config
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-your_spotify-config -> init-config-end
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       base -> init-envfile
       init-os-end -> init-folders
       init-php -> init-keygen
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-version-checks -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
       init-samples -> init-nginx
-      init-permissions -> init-nginx-end
-      base -> init-os-end
+      init-version-checks -> init-nginx-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-keygen -> init-permissions
       init-nginx -> init-php
       init-folders -> init-samples
       init-custom-files -> init-services
-      init-mods-end -> init-services
-      init-config-end -> init-version-checks
+      init-permissions -> init-version-checks
       init-nginx-end -> init-your_spotify-config
       init-services -> svc-cron
       svc-cron -> legacy-services
@@ -343,13 +338,14 @@ To help with development, we generate this dependency graph.
       svc-your_spotify -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine-nginx:3.20" <- "baseimage-alpine:3.20"
+      "baseimage-alpine-nginx:3.21" <- "baseimage-alpine:3.21"
     }
     "your_spotify:latest" <- Base Images
     ```
 
 ## Versions
 
+* **20.12.24:** - Rebase to Alpine 3.21.
 * **27.05.24:** - Existing users should update their nginx confs to avoid http2 deprecation warnings.
 * **24.05.24:** - Rebase to Alpine 3.20.
 * **02.03.24:** - Updates for changes in 1.8.0. Initial DB migration may take several minutes.
