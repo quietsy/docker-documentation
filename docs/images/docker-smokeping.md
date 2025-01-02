@@ -60,6 +60,7 @@ services:
   smokeping:
     image: lscr.io/linuxserver/smokeping:latest
     container_name: smokeping
+    hostname: smokeping #optional
     environment:
       - PUID=1000
       - PGID=1000
@@ -80,6 +81,7 @@ services:
 ```bash
 docker run -d \
   --name=smokeping \
+  --hostname=smokeping `#optional` \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Etc/UTC \
@@ -125,6 +127,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :-----:   | --- |
+| `--hostname=` | In a master-slave architecture, the hostname of the master node is displayed as its name in the web interface, while the hostname of the slave nodes represents their device aliases. These slave hostnames must match the aliases defined in the master's Slaves file. |
 
 ## Environment variables from files (Docker secrets)
 
