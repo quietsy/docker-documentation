@@ -343,23 +343,19 @@ To help with development, we generate this dependency graph.
       init-migrations -> init-adduser
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-usb-homeassistant -> init-config-end
       init-config -> init-config-homeassistant
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       base -> init-envfile
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
-      base -> init-os-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-custom-files -> init-services
-      init-mods-end -> init-services
       init-config-homeassistant -> init-usb-homeassistant
       init-services -> svc-cron
       svc-cron -> legacy-services
@@ -368,13 +364,14 @@ To help with development, we generate this dependency graph.
       svc-homeassistant -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine:3.20"
+      "baseimage-alpine:3.21"
     }
     "homeassistant:latest" <- Base Images
     ```
 
 ## Versions
 
+* **03.01.25:** - Rebase to alpine 3.21.
 * **04.12.24:** - Make setcap target dynamic.
 * **07.11.24:** - Add go2rtc binary.
 * **12.10.24:** - Allow uv to modify system python packages.
