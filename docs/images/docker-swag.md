@@ -126,6 +126,15 @@ This will *ask* Google et al not to index and list your site. Be careful with th
 
 Please follow the instructions [on this blog post](https://www.linuxserver.io/blog/2020-08-21-introducing-swag#migrate).
 
+## Read-Only Operation
+
+This image can be run with a read-only container filesystem. For details please [read the docs](https://docs.linuxserver.io/misc/read-only/).
+
+### Caveats
+
+* `/tmp` must be mounted to tmpfs
+* fail2ban will not be available
+
 ## Usage
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
@@ -158,6 +167,7 @@ services:
       - ONLY_SUBDOMAINS=false #optional
       - EXTRA_DOMAINS= #optional
       - STAGING=false #optional
+      - DISABLE_F2B= #optional
     volumes:
       - /path/to/swag/config:/config
     ports:
@@ -185,6 +195,7 @@ docker run -d \
   -e ONLY_SUBDOMAINS=false `#optional` \
   -e EXTRA_DOMAINS= `#optional` \
   -e STAGING=false `#optional` \
+  -e DISABLE_F2B= `#optional` \
   -p 443:443 \
   -p 80:80 `#optional` \
   -v /path/to/swag/config:/config \
@@ -220,6 +231,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `ONLY_SUBDOMAINS=false` | If you wish to get certs only for certain subdomains, but not the main domain (main domain may be hosted on another machine and cannot be validated), set this to `true` |
 | `EXTRA_DOMAINS=` | Additional fully qualified domain names (comma separated, no spaces) ie. `example.net,subdomain.example.net,*.example.org` |
 | `STAGING=false` | Set to `true` to retrieve certs in staging mode. Rate limits will be much higher, but the resulting cert will not pass the browser's security test. Only to be used for testing purposes. |
+| `DISABLE_F2B=` | Set to `true` to disable the Fail2ban service in the container, if you're already running it elsewhere or using a different IPS. |
 
 ### Volume Mappings (`-v`)
 
@@ -231,6 +243,7 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :-----:   | --- |
+| `--read-only=true` | Run container with a read-only filesystem. Please [read the docs](https://docs.linuxserver.io/misc/read-only/). |
 | `--cap-add=NET_ADMIN` | Required for fail2Ban to be able to modify iptables rules. |
 
 ### Portainer notice
@@ -422,26 +435,22 @@ To help with development, we generate this dependency graph.
       init-nginx-end -> init-config
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-outdated-config -> init-config-end
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       base -> init-envfile
       init-swag-samples -> init-fail2ban-config
       init-os-end -> init-folders
       init-php -> init-keygen
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-version-checks -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
       init-samples -> init-nginx
-      init-permissions -> init-nginx-end
-      base -> init-os-end
+      init-version-checks -> init-nginx-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-renew -> init-outdated-config
       init-keygen -> init-permissions
       init-certbot-config -> init-permissions-config
@@ -450,11 +459,10 @@ To help with development, we generate this dependency graph.
       init-config -> init-require-url
       init-folders -> init-samples
       init-custom-files -> init-services
-      init-mods-end -> init-services
       init-fail2ban-config -> init-swag-config
       init-require-url -> init-swag-folders
       init-swag-folders -> init-swag-samples
-      init-config-end -> init-version-checks
+      init-permissions -> init-version-checks
       init-services -> svc-cron
       svc-cron -> legacy-services
       init-services -> svc-fail2ban
@@ -465,13 +473,14 @@ To help with development, we generate this dependency graph.
       svc-php-fpm -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine-nginx:3.20" <- "baseimage-alpine:3.20"
+      "baseimage-alpine-nginx:3.21" <- "baseimage-alpine:3.21"
     }
     "swag:latest" <- Base Images
     ```
 
 ## Versions
 
+* **17.12.24:** - Rebase to Alpine 3.21.
 * **21.10.24:** - Fix naming issue with Dynu plugin. If you are using Dynu, please make sure your credentials are set in /config/dns-conf/dynu.ini and your DNSPLUGIN variable is set to dynu (not dynudns).
 * **30.08.24:** - Fix zerossl cert revocation.
 * **24.07.14:** - Rebase to Alpine 3.20. Remove deprecated Google Domains certbot plugin. Existing users should update their nginx confs to avoid http2 deprecation warnings.
