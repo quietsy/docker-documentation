@@ -48,6 +48,7 @@ This image can be run with a read-only container filesystem. For details please 
 
 ### Caveats
 
+* `/tmp` must be mounted to tmpfs
 * Custom themes are not supported
 
 ## Non-Root Operation
@@ -56,7 +57,6 @@ This image can be run with a non-root user. For details please [read the docs](h
 
 ### Caveats
 
-* `/tmp` must be mounted to tmpfs
 * Custom themes are not supported
 
 ## Usage
