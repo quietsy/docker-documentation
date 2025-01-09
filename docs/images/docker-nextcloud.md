@@ -406,6 +406,7 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **09.01.25:** - Fix uploading large files. Existing users should update their nginx confs.
 * **09.07.24:** - Add `previous` tag for n-1 releases.
 * **24.06.24:** - Rebase to Alpine 3.20. Existing users should update their nginx confs to avoid http2 deprecation warnings.
 * **19.05.24:** - Added util-linux package required for taskset.
