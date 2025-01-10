@@ -528,6 +528,7 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **10.01.25:** - Rebase Fedora to 41.
 * **06.12.24:** - Rebase Alpine to 3.21.
 * **26.09.24:** - Swap from firefox to chromium on Alpine images.
 * **23.05.24:** - Rebase Alpine to 3.20, document Nvidia support.
