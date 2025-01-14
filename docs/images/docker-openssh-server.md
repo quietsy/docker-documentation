@@ -20,7 +20,7 @@ title: openssh-server
 Giving ssh access via private key often means giving full access to the server. This container creates a limited and sandboxed environment that others can ssh into.
 The users only have access to the folders mapped and the processes running inside this container.
 
-[![openssh-server](https://upload.wikimedia.org/wikipedia/en/6/65/OpenSSH_logo.png)](https://www.openssh.com/)
+[![openssh-server](https://raw.githubusercontent.com/linuxserver/docker-templates/blob/master/linuxserver.io/img/openssh-server-logo.png)](https://www.openssh.com/)
 
 ## Supported Architectures
 
@@ -354,23 +354,19 @@ To help with development, we generate this dependency graph.
       init-migrations -> init-adduser
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-openssh-server-config -> init-config-end
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       base -> init-envfile
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
       init-config -> init-openssh-server-config
-      base -> init-os-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-custom-files -> init-services
-      init-mods-end -> init-services
       init-openssh-server-config -> log-openssh-server
       init-services -> log-openssh-server
       init-services -> svc-cron
@@ -379,13 +375,14 @@ To help with development, we generate this dependency graph.
       svc-openssh-server -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine:3.20"
+      "baseimage-alpine:3.21"
     }
     "openssh-server:latest" <- Base Images
     ```
 
 ## Versions
 
+* **12.01.25:** - Rebase to Alpine 3.21.
 * **24.11.24:** - Move sshd_config to /config/sshd/sshd_config.
 * **31.05.24:** - Rebase to Alpine 3.20.
 * **04.05.24:** - Display the SSH host public keys every time the container starts.
