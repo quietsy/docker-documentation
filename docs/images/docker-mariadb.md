@@ -387,7 +387,7 @@ To help with development, we generate this dependency graph.
       base -> init-envfile
       init-config -> init-mariadb-config
       init-mariadb-config -> init-mariadb-initdb
-      svc-mariadb -> init-mariadb-upgrade
+      svc-mariadb -> init-mariadb-poststart
       base -> init-migrations
       init-config-end -> init-mods
       init-mods-package-install -> init-mods-end
@@ -408,6 +408,7 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **11.01.25:** - Add log rotation, follow the instructions in the container log.
 * **06.01.25:** - Rebase to Alpine 3.21.
 * **31.05.24:** - Rebase to Alpine 3.20.
 * **23.12.23:** - Rebase to Alpine 3.19.
