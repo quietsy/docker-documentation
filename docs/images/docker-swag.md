@@ -236,8 +236,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `EXTRA_DOMAINS=` | Additional fully qualified domain names (comma separated, no spaces) ie. `example.net,subdomain.example.net,*.example.org` |
 | `STAGING=false` | Set to `true` to retrieve certs in staging mode. Rate limits will be much higher, but the resulting cert will not pass the browser's security test. Only to be used for testing purposes. |
 | `DISABLE_F2B=` | Set to `true` to disable the Fail2ban service in the container, if you're already running it elsewhere or using a different IPS. |
-| `SWAG_AUTORELOAD=` | Set to `true` to enable automatic reloading of nginx confs on change. Your filesystem must support inotify. This functionality was previously offered [via mod](https://github.com/linuxserver/docker-mods/tree/swag-auto-reload). |
-| `SWAG_AUTORELOAD_WATCHLIST=` | A pipe-separated list of additional folders for auto reload to watch in addition to `/config/nginx` |
+| `SWAG_AUTORELOAD=` | Set to `true` to enable automatic reloading of confs on change without stopping/restarting nginx. Your filesystem must support inotify. This functionality was previously offered [via mod](https://github.com/linuxserver/docker-mods/tree/swag-auto-reload). |
+| `SWAG_AUTORELOAD_WATCHLIST=` | A [pipe](https://en.wikipedia.org/wiki/Vertical_bar)-separated list of additional folders for auto reload to watch in addition to `/config/nginx` |
 
 ### Volume Mappings (`-v`)
 
