@@ -168,6 +168,8 @@ services:
       - EXTRA_DOMAINS= #optional
       - STAGING=false #optional
       - DISABLE_F2B= #optional
+      - SWAG_AUTORELOAD= #optional
+      - SWAG_AUTORELOAD_WATCHLIST= #optional
     volumes:
       - /path/to/swag/config:/config
     ports:
@@ -196,6 +198,8 @@ docker run -d \
   -e EXTRA_DOMAINS= `#optional` \
   -e STAGING=false `#optional` \
   -e DISABLE_F2B= `#optional` \
+  -e SWAG_AUTORELOAD= `#optional` \
+  -e SWAG_AUTORELOAD_WATCHLIST= `#optional` \
   -p 443:443 \
   -p 80:80 `#optional` \
   -v /path/to/swag/config:/config \
@@ -232,6 +236,8 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `EXTRA_DOMAINS=` | Additional fully qualified domain names (comma separated, no spaces) ie. `example.net,subdomain.example.net,*.example.org` |
 | `STAGING=false` | Set to `true` to retrieve certs in staging mode. Rate limits will be much higher, but the resulting cert will not pass the browser's security test. Only to be used for testing purposes. |
 | `DISABLE_F2B=` | Set to `true` to disable the Fail2ban service in the container, if you're already running it elsewhere or using a different IPS. |
+| `SWAG_AUTORELOAD=` | Set to `true` to enable automatic reloading of nginx confs on change. Your filesystem must support inotify. This functionality was previously offered [via mod](https://github.com/linuxserver/docker-mods/tree/swag-auto-reload). |
+| `SWAG_AUTORELOAD_WATCHLIST=` | A `|`-separated list of additional folders for auto reload to watch in addition to `/config/nginx` |
 
 ### Volume Mappings (`-v`)
 
@@ -471,6 +477,8 @@ To help with development, we generate this dependency graph.
       svc-nginx -> legacy-services
       init-services -> svc-php-fpm
       svc-php-fpm -> legacy-services
+      init-services -> svc-swag-auto-reload
+      svc-swag-auto-reload -> legacy-services
     }
     Base Images: {
       "baseimage-alpine-nginx:3.21" <- "baseimage-alpine:3.21"
@@ -480,6 +488,7 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **19.01.25:** - Add [Auto Reload](https://github.com/linuxserver/docker-mods/tree/swag-auto-reload) functionality to SWAG.
 * **17.12.24:** - Rebase to Alpine 3.21.
 * **21.10.24:** - Fix naming issue with Dynu plugin. If you are using Dynu, please make sure your credentials are set in /config/dns-conf/dynu.ini and your DNSPLUGIN variable is set to dynu (not dynudns).
 * **30.08.24:** - Fix zerossl cert revocation.
