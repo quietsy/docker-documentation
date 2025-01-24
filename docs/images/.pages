@@ -1,2 +1,2 @@
 nav:
-    - ... | regex=^docker-(?!(baseimage-.*|base-alpine-example|base-ubuntu-example|build-agent|ci|doc-builder|jenkins-builder|readme-sync|tester|unrar|yq)\.).*\.md$
+    - ... | regex=^docker-(?!(baseimage-.*|build-agent|ci|doc-builder|jenkins-builder|readme-sync|tester|unrar|yq)\.).*\.md$
