@@ -495,4 +495,5 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **24.01.25:** - Fix SVG icons not rendering.
 * **18.07.24:** - Initial release.
