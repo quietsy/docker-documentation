@@ -17,6 +17,7 @@ jobs:
           fetch-depth: 0
           sparse-checkout: |
             docs
+            scripts
       - name: Setup python
         uses: actions/setup-python@v5.3.0
         with:
@@ -49,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r docs/requirements.txt
       - name: Generate images-by-category.md
-        run: python ../scripts/generate-images-by-category.py
+        run: python scripts/generate-images-by-category.py
       - name: Build documentation
         run: mkdocs build
 
