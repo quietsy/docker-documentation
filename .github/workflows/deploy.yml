@@ -48,6 +48,8 @@ jobs:
           cp /tmp/d2/bin/d2 /usr/local/bin
       - name: Install dependencies
         run: pip install -r docs/requirements.txt
+      - name: Generate images-by-category.md
+        run: python ./scripts/generate-images-by-category.py
       - name: Build documentation
         run: mkdocs build
 
