@@ -341,6 +341,7 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **28.01.25:** - Add xz-utils.
 * **03.12.24:** - Add mscorefonts for captcha support.
 * **29.11.24:** - Rebase to Noble, add support for settings DB encryption.
 * **15.02.23:** - Rebase to Jammy.
