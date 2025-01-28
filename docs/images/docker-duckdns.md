@@ -321,34 +321,31 @@ To help with development, we generate this dependency graph.
       init-migrations -> init-adduser
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-duckdns -> init-config-end
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       init-config -> init-duckdns
       base -> init-envfile
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
-      base -> init-os-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-custom-files -> init-services
-      init-mods-end -> init-services
       init-services -> svc-cron
       svc-cron -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine:3.20"
+      "baseimage-alpine:3.21"
     }
     "duckdns:latest" <- Base Images
     ```
 
 ## Versions
 
+* **27.01.25:** - Rebase to Alpine 3.21.
 * **24.06.24:** - Rebase to Alpine 3.20.
 * **17.06.24:** - Bump CI_DELAY to 120 seconds as ARM builds were failing.
 * **30.03.24:** - Added IP address to logging output when IP changes.
