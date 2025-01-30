@@ -1,3 +1,8 @@
+
+!!! warning Deprecation warning
+
+    This image is deprecated. We will not offer support for this image and it will not be updated.
+
 # linuxserver/doc-builder
 
 Expects to run as part of the LSIO CI process. Not for public consumption.
