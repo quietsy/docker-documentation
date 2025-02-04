@@ -479,4 +479,5 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **04.02.25:** - Clean up Singletons if container is shut down while windows are open.
 * **25.04.24:** - Initial release.
