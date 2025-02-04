@@ -315,36 +315,33 @@ To help with development, we generate this dependency graph.
       init-migrations -> init-adduser
       init-os-end -> init-config
       init-config -> init-config-end
+      init-crontab-config -> init-config-end
       init-rsnapshot-test -> init-config-end
-      init-os-end -> init-crontab-config
+      init-config -> init-crontab-config
       init-mods-end -> init-custom-files
       base -> init-envfile
       base -> init-migrations
-      base -> init-mods
       init-config-end -> init-mods
-      init-mods -> init-mods-end
       init-mods-package-install -> init-mods-end
       init-mods -> init-mods-package-install
-      base -> init-os-end
       init-adduser -> init-os-end
       init-envfile -> init-os-end
-      init-migrations -> init-os-end
       init-config -> init-rsnapshot-config
       init-rsnapshot-upgrade -> init-rsnapshot-test
       init-rsnapshot-config -> init-rsnapshot-upgrade
       init-custom-files -> init-services
-      init-mods-end -> init-services
       init-services -> svc-cron
       svc-cron -> legacy-services
     }
     Base Images: {
-      "baseimage-alpine:3.20"
+      "baseimage-alpine:3.21"
     }
     "rsnapshot:latest" <- Base Images
     ```
 
 ## Versions
 
+* **01.02.25:** - Rebase to Alpine 3.21.
 * **06.03.24:** - Rebase to Alpine 3.20.
 * **23.12.23:** - Rebase to Alpine 3.19, add root periodic crontabs for logrotate.
 * **25.05.23:** - Rebase to Alpine 3.18, deprecate armhf.
