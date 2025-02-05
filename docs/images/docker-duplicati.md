@@ -43,8 +43,8 @@ This image provides various versions that are available via tags. Please read th
 
 | Tag | Available | Description |
 | :----: | :----: |--- |
-| latest | ✅ | Beta releases of Duplicati |
-| development | ✅ | Canary releases of Duplicati |
+| latest | ✅ | Stable releases of Duplicati |
+| development | ✅ | Beta releases of Duplicati |
 
 ## Application Setup
 
@@ -344,6 +344,7 @@ To help with development, we generate this dependency graph.
 
 ## Versions
 
+* **31.01.25:** - Make `latest` stable releases, move beta releases to `development`.
 * **28.01.25:** - Add xz-utils.
 * **03.12.24:** - Add mscorefonts for captcha support.
 * **29.11.24:** - Rebase to Noble, add support for settings DB encryption.
