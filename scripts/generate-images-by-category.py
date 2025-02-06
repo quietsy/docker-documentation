@@ -21,25 +21,28 @@ def process_input(image_to_description, category_to_images, file):
         header = False
         found = False
         for line in input:
-            if not header and line.strip().startswith("---"):
+            line = line.strip(" \t\n\r")
+            if not header and line.startswith("---"):
                 header = True
-            elif header and line.strip().startswith("---"):
+            elif header and line.startswith("---"):
                 break
-            elif line.strip().startswith("description:"):
-                description = line.replace("description: ", "").replace("\\n", " ").replace("\"", "").strip(' \t\n\r')
+            elif line.startswith("description:"):
+                description = line.replace("description: ", "").replace("\\n", " ").replace("\"", "").strip(" \t\n\r")
                 image_to_description[image] = description if description else "No description"
-            elif line.rstrip() == "tags:":
+            elif line == "tags:":
                 found = True
-            elif not line.strip().startswith("-"):
+            elif not line.startswith("-"):
                 found = False
             elif found:
-                tag = line.replace("-", "").strip(' \t\n\r')
+                tag = line.replace("-", "", 1).strip(" \t\n\r")
                 if tag == "Internal":
                     continue
                 category_to_images[tag].append(image)
 
 def generate_output(image_to_description, category_to_images):
     with open(OUTPUT_PATH, "w") as output:
+        output.write("<!--- DO NOT CHANGE THIS FILE MANUALLY, IT IS AUTOMATICALLY GENERATED -->")
+        output.write("<!--- GENERATED FROM https://github.com/linuxserver/docker-documentation/scripts/generate-images-by-category.py -->")
         output.write("# Images by Category\n\n")
 
         for category in sorted(category_to_images.keys()):
